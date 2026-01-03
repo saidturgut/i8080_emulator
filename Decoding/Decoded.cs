@@ -9,5 +9,5 @@ public struct Decoded()
     
     public ALUOperation AluOperation = new ALUOperation();
     
-    public readonly List<MachineCycle> Table = [MachineCycle.FETCH, MachineCycle.DECODE];
+    public readonly List<MachineCycle> Table = [MachineCycle.FETCH];
 }

@@ -2,10 +2,11 @@ namespace i8080_emulator.Executing;
 using Computing;
 using Signaling;
 
+// ALU RESOLVER, ADDRESS BUFFER, MULTIPLEXER, INCREMENTER
 public partial class DataPath
 {
     private readonly RAM RAM = new RAM();
-    private ALU ALU = new ALU();
+    private readonly ALU ALU = new ALU();
     
     private readonly Bus DBUS = new Bus(); // DATA BUS 
     private readonly Bus ABUS_H = new Bus(); 
@@ -24,9 +25,6 @@ public partial class DataPath
     
     public void Init()
     {
-        H = 0x12;
-        L = 0x34;
-        
         RAM.Init();
     }
     
@@ -40,9 +38,18 @@ public partial class DataPath
     public void Set(SignalSet input)
     {
         signals = input;
+    }
 
-        Console.WriteLine($"PROGRAM COUNTER : {PC_H} + {PC_L}");
+    public void Debug()
+    {
+        Console.WriteLine($"PROGRAM COUNTER : {(ushort)((PC_H << 8) + PC_L)}");
         Console.WriteLine($"IR : {IR}");
+        Console.WriteLine($"B : {B}");
+        Console.WriteLine($"C : {C}");
+        Console.WriteLine($"D : {D}");
+        Console.WriteLine($"E : {E}");
+        Console.WriteLine($"H : {H}");
+        Console.WriteLine($"L : {L}");
         Console.WriteLine($"A : {A}");
         Console.WriteLine($"HL : {(ushort)((H << 8) + L)}");
     }

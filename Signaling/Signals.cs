@@ -1,24 +1,13 @@
 namespace i8080_emulator.Signaling;
 using Executing.Computing;
 
-public enum MachineCycle
-{
-    FETCH,
-    DECODE,
-    EXECUTE_ALU,
-    RAM_READ, RAM_WRITE, 
-    RAM_READ_IMM,
-    
-    NONE, JMP, CALL, LDA, STA, LHLD, SHLD, //FIXED INSTRUCTIONS
-}
-
 public struct SignalSet()
 {
     public AddressDriver AddressDriver = AddressDriver.NONE;
-    public DataDriver DataDriver  = DataDriver.NONE;
-    public DataLatcher DataLatcher =  DataLatcher.NONE;
+    public DataDriver DataDriver = DataDriver.NONE;
+    public DataLatcher DataLatcher = DataLatcher.NONE;
     public ALUOperation AluOperation = new ALUOperation();
-    public SideEffect SideEffect  = SideEffect.NONE;
+    public SideEffect SideEffect = SideEffect.NONE;
 }
 
 public enum AddressDriver
@@ -31,22 +20,26 @@ public enum AddressDriver
 public enum DataDriver
 {
     NONE,
-    RAM,
-    A, B, C, D, E,
+    B, C, D, E,
     H, L,
+    RAM,
+    A,
 }
 
 public enum DataLatcher
 {
     NONE,
-    RAM, IR,
-    A, B, C, D, E,
+    B, C, D, E,
     H, L,
+    RAM,
+    A,
+    IR,
 }
 
 public enum SideEffect
 {
     NONE,
+    DECODE,
     PC_INC,
     FLAG_LATCH,
 }

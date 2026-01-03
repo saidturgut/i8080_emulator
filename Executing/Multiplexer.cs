@@ -7,7 +7,7 @@ public partial class DataPath
     {        
         if(signals.DataDriver == DataDriver.NONE)
             return;
-
+        
         // RANDOM ACCESS MEMORY
         if (signals.DataDriver == DataDriver.RAM)
             RAM.Read(ABUS_H, ABUS_L, DBUS);

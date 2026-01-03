@@ -1,35 +1,31 @@
 namespace i8080_emulator.Signaling;
+using Decoding;
 
-public class ControlUnit : SignalSets
-{
+public partial class ControlUnit
+{        
+    private readonly DecoderCore Decoder = new DecoderCore();
     private readonly Sequencer Sequencer = new Sequencer();
+    
     private MachineCycle currentCycle;
     
-    public bool Terminate;
+    public bool HALT;
     
     public SignalSet Emit(byte IR)
     {
-        if (IR == 0x76) Terminate = true; // HLT
+        if (IR == 0x76) HALT = true; // HLT
         
         currentCycle = decoded.Table[Sequencer.mState];
-        
-        switch (currentCycle)
-        {
-            case MachineCycle.FETCH:
-                return Fetch();
-            case MachineCycle.DECODE:
-                return Decode(IR);
-            case MachineCycle.RAM_READ:
-                return RamRead();
-            case MachineCycle.RAM_WRITE:
-                return RamWrite();
-            case MachineCycle.RAM_READ_IMM:
-                return RamReadImm();
-        }
 
-        throw new Exception("UNKNOWN CYCLE");
+        SignalSet signals = MachineCycleTable[currentCycle](Sequencer.tState);
+        
+        if (signals.SideEffect == SideEffect.DECODE)
+            decoded = Decoder.Decode(IR);
+        
+        return signals;
     }
     
     public void Advance()
-        => Sequencer.Advance((byte)(decoded.Table.Count - 1));
+        => Sequencer.Advance((byte)
+            (decoded.Table.Count - 1), 
+            MachineCyclesData[currentCycle]);
 }

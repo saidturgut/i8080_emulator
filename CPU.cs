@@ -13,10 +13,8 @@ public class CPU
     {
         DataPath.Init();
         
-        while (!ControlUnit.Terminate)
+        while (!ControlUnit.HALT)
         {
-            Thread.Sleep(200);
-            
             Tick();
         }
     }
@@ -33,6 +31,8 @@ public class CPU
         
         DataPath.MultiplexerLatch();
         DataPath.Incrementer();
+
+        DataPath.Debug();
         
         ControlUnit.Advance();
     }
