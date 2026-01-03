@@ -6,9 +6,9 @@ public class ALU
     {
         ALUOutput output = new ALUOutput();
         
-        switch (input.Operation)
+        switch (input.ALUOperation.Operation)
         {
-            case ALUOperation.ADD:
+            case Operation.ADD:
             {
                 byte carry = (byte)(input.CR ? 1 : 0);
                 int result = input.A + input.B + carry;

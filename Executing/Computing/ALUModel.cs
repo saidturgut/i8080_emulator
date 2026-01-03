@@ -2,7 +2,7 @@ namespace i8080_emulator.Executing.Computing;
 
 public struct ALUInput
 {
-    public ALUOperation Operation;
+    public ALUOperation ALUOperation;
     public byte A;
     public byte B;
     public bool CR;
@@ -27,7 +27,13 @@ public enum ALUFlags
     Carry = 1 <<  0,
 }
 
-public enum ALUOperation
+public struct ALUOperation()
+{
+    public Operation Operation = Operation.NONE;
+    public bool CarryIn = false;
+}
+
+public enum Operation
 {
     NONE,
     ADD, SUB, SBB, AND, XOR, OR,  CMP, INR, DCR

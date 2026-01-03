@@ -5,6 +5,7 @@ public enum MachineCycle
 {
     FETCH,
     DECODE,
+    EXECUTE_ALU,
     RAM_READ, RAM_WRITE, 
     RAM_READ_IMM,
     
@@ -16,7 +17,7 @@ public struct SignalSet()
     public AddressDriver AddressDriver = AddressDriver.NONE;
     public DataDriver DataDriver  = DataDriver.NONE;
     public DataLatcher DataLatcher =  DataLatcher.NONE;
-    public ALUOperation AluOperation = ALUOperation.NONE;
+    public ALUOperation AluOperation = new ALUOperation();
     public SideEffect SideEffect  = SideEffect.NONE;
 }
 
@@ -47,4 +48,5 @@ public enum SideEffect
 {
     NONE,
     PC_INC,
+    FLAG_LATCH,
 }

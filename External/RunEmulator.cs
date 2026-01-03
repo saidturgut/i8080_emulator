@@ -2,8 +2,8 @@
 
 internal static class RunEmulator
 {
-    private static readonly CentralProcessUnit 
-        CentralProcessUnit = new CentralProcessUnit();
+    private static readonly CPU 
+        Cpu = new CPU();
 
-    private static void Main() => CentralProcessUnit.PowerOn();
+    private static void Main() => Cpu.PowerOn();
 }

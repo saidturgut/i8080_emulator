@@ -4,8 +4,8 @@ using Signaling;
 
 public partial class DataPath
 {
-    private readonly RandomAccessMemory RAM = new RandomAccessMemory();
-    private readonly ALUOperator ALUOperator = new ALUOperator();
+    private readonly RAM RAM = new RAM();
+    private ALU ALU = new ALU();
     
     private readonly Bus DBUS = new Bus(); // DATA BUS 
     private readonly Bus ABUS_H = new Bus(); 
@@ -45,10 +45,5 @@ public partial class DataPath
         Console.WriteLine($"IR : {IR}");
         Console.WriteLine($"A : {A}");
         Console.WriteLine($"HL : {(ushort)((H << 8) + L)}");
-    }
-
-    public void OperateALU()
-    {
-        ALUOperator.OperateALU(signals);
     }
 }

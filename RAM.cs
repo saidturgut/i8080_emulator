@@ -1,7 +1,7 @@
 namespace i8080_emulator;
 using Executing;
 
-public class RandomAccessMemory
+public class RAM
 {
     private readonly byte[] Memory = new byte[0x10000]; // 64 KB
 

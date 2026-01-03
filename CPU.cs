@@ -2,7 +2,7 @@ namespace i8080_emulator;
 using Executing;
 using Signaling;
 
-public class CentralProcessUnit
+public class CPU
 {    
     private readonly DataPath DataPath = new DataPath();
     private readonly ControlUnit ControlUnit = new ControlUnit();
@@ -27,7 +27,7 @@ public class CentralProcessUnit
         DataPath.Set
         (ControlUnit.Emit(DataPath.IR));
         
-        DataPath.OperateALU();
+        DataPath.ResolveALU();
         DataPath.AddressBuffer();
         DataPath.MultiplexerDrive();
         

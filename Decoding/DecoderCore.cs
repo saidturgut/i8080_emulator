@@ -35,9 +35,9 @@ public class DecoderCore : DecoderFamilies
             case 0b01:
                 return GroupREG(opcode);
             case 0b10:
-                return GroupALU(opcode);
+                return GroupALU(opcode, false);
             case 0b11:
-                return new Decoded();
+                return GroupALU(opcode, false);
         }
 
         return new Decoded();

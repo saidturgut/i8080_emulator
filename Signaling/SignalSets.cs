@@ -23,6 +23,15 @@ public class SignalSets
         return new SignalSet();
     }
 
+    protected SignalSet ExecuteAlu()
+    {
+        return new SignalSet
+        {
+            AluOperation = decoded.AluOperation,
+            SideEffect = SideEffect.FLAG_LATCH,
+        };
+    }
+
     protected SignalSet RamRead()
     {
         return new SignalSet
