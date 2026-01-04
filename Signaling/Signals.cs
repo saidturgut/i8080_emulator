@@ -24,6 +24,7 @@ public enum DataDriver
     H, L,
     RAM,
     A,
+    TMP,
 }
 
 public enum DataLatcher
@@ -33,6 +34,7 @@ public enum DataLatcher
     H, L,
     RAM,
     A,
+    TMP,
     IR,
 }
 
@@ -41,5 +43,7 @@ public enum SideEffect
     NONE,
     DECODE,
     PC_INC,
-    FLAG_LATCH,
+    CMP,
+    STC,
+    CMC,
 }

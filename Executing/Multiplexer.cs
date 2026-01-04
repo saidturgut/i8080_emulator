@@ -12,6 +12,10 @@ public partial class DataPath
         if (signals.DataDriver == DataDriver.RAM)
             RAM.Read(ABUS_H, ABUS_L, DBUS);
         
+        // TEMP DATA REGISTER
+        if (signals.DataDriver == DataDriver.TMP)
+            DBUS.Set(TMP);
+        
         // TEMP ADDRESS REGISTER
         if(signals.DataDriver == DataDriver.H)
             DBUS.Set(H);
@@ -41,6 +45,10 @@ public partial class DataPath
             RAM.Write(ABUS_H, ABUS_L, DBUS);
         if (signals.DataLatcher == DataLatcher.IR)
             IR = DBUS.Get();
+        
+        // TEMP DATA REGISTER
+        if (signals.DataLatcher == DataLatcher.TMP)
+            TMP = DBUS.Get();
         
         // TEMP ADDRESS REGISTER
         if(signals.DataLatcher == DataLatcher.H)

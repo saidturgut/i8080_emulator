@@ -4,21 +4,23 @@ using Signaling;
 
 public partial class DataPath
 {
-    public ALUOutput Output;
-    
     public void ResolveALU()
     {
         if(signals.AluOperation.Operation == Operation.NONE)
             return;
 
-        ALUInput input = new ALUInput
+        ALUOutput Output = ALU.Compute(new ALUInput
         {
             ALUOperation = signals.AluOperation,
             A = A,
-            B = B,
-            CR = signals.AluOperation.CarryIn,
-        };
-        
-        Output = ALU.Compute(input);
+            B = TMP,
+            CR = (byte)(FLAGS & (byte)ALUFlags.Carry) == 1 && 
+                 signals.AluOperation.CarryIn,
+        });
+
+        if (signals.SideEffect != SideEffect.CMP)
+            A = Output.Result;
+
+        FLAGS = Output.Flags;
     }
 }

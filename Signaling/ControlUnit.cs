@@ -16,7 +16,7 @@ public partial class ControlUnit
         
         currentCycle = decoded.Table[Sequencer.mState];
 
-        SignalSet signals = MachineCycleTable[currentCycle](Sequencer.tState);
+        SignalSet signals = MachineCyclesMethod[currentCycle](Sequencer.tState);
         
         if (signals.SideEffect == SideEffect.DECODE)
             decoded = Decoder.Decode(IR);
@@ -27,5 +27,5 @@ public partial class ControlUnit
     public void Advance()
         => Sequencer.Advance((byte)
             (decoded.Table.Count - 1), 
-            MachineCyclesData[currentCycle]);
+            MachineCyclesLength[currentCycle]);
 }

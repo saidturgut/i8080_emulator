@@ -7,14 +7,17 @@ public class DecoderModel
     protected readonly Dictionary<byte, MachineCycle> FixedOpcodes
         = new ()
         {
-            { 0x00, MachineCycle.NONE },
-            { 0x76, MachineCycle.NONE },
+            { 0x00, MachineCycle.NONE }, // NOP
+            { 0x76, MachineCycle.NONE }, // HLT
             { 0xC3, MachineCycle.JMP },
             { 0xCD, MachineCycle.CALL },
             { 0x3A, MachineCycle.LDA },
             { 0x32, MachineCycle.STA },
             { 0x2A, MachineCycle.LHLD },
             { 0x22, MachineCycle.SHLD },
+            
+            { 0x37, MachineCycle.STC },
+            { 0x3F, MachineCycle.CMC },
         };
 
     protected readonly Operation[] ALUOperations =

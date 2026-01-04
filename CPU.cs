@@ -17,6 +17,8 @@ public class CPU
         {
             Tick();
         }
+        
+        DataPath.MemoryDump();
     }
 
     private void Tick()

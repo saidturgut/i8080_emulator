@@ -4,73 +4,74 @@ using Signaling;
 public class DecoderFamilies : DecoderModel
 {
     // 00
-    protected Decoded FamilyIMM(byte opcode)
+    protected Decoded Family00(byte opcode)
     {
         Decoded decoded = new Decoded
         {
             DataLatcher = DataLatchers[BB_XXX_BBB(opcode)],
-            DataDriver = DataDriver.NONE,
         };
         
         decoded.Table.Add(MachineCycle.RAM_READ_IMM);
-        
+
         if (decoded.DataLatcher == DataLatcher.RAM)
             decoded.Table.Add(MachineCycle.RAM_WRITE);
-
+        else
+        {
+            decoded.DataDriver = DataDriver.TMP;
+            decoded.Table.Add(MachineCycle.BUS_LATCH);
+        }
+        
         return decoded;
     }
 
     // 01
-    protected Decoded FamilyREG(byte opcode)
+    protected Decoded Family01(byte opcode)
     {
         Decoded decoded = new Decoded
         {            
             DataDriver = DataDrivers[BB_BBB_XXX(opcode)],
             DataLatcher = DataLatchers[BB_XXX_BBB(opcode)],
         };
-        
-        if (decoded.DataDriver != DataDriver.RAM && decoded.DataLatcher != DataLatcher.RAM)
+
+        if (decoded.DataLatcher == DataLatcher.RAM)
         {
-            decoded.Table.Add(MachineCycle.EXECUTE_MOV);
+            decoded.Table.Add(MachineCycle.TMP_LATCH);
+            decoded.Table.Add(MachineCycle.RAM_WRITE);
         }
         else
         {
             if (decoded.DataDriver == DataDriver.RAM)
                 decoded.Table.Add(MachineCycle.RAM_READ);
-        
-            if(decoded.DataLatcher == DataLatcher.RAM)
-                decoded.Table.Add(MachineCycle.RAM_WRITE);
+            
+            decoded.Table.Add(MachineCycle.BUS_LATCH);
         }
         
         return decoded; // 01 110 110 (0x76) is already HLT
     }
 
     // 10
-    protected Decoded FamilyALU(byte opcode, bool imm)
+    protected Decoded Family10(byte opcode)
     {
         Decoded decoded = new Decoded
         {
-            DataDriver = DataDrivers[BB_BBB_XXX(opcode)]
+            DataDriver = DataDrivers[BB_BBB_XXX(opcode)],
+            DataLatcher = DataLatcher.TMP,
         };
 
-        if (BB_XXX_BBB(opcode) != 0b111) // CHECK CMP
-            decoded.DataLatcher = DataLatcher.A;
+        decoded.Table.Add(decoded.DataDriver == DataDriver.RAM ? 
+            MachineCycle.RAM_READ : 
+            MachineCycle.TMP_LATCH);
 
-        if (decoded.DataDriver == DataDriver.RAM)
-        {
-            decoded.Table.Add(imm ? 
-                MachineCycle.RAM_READ_IMM : 
-                MachineCycle.RAM_READ);
-        }
+        decoded.Table.Add(MachineCycle.ALU_EXECUTE);
 
-        decoded.Table.Add(MachineCycle.EXECUTE_ALU);
-
-        decoded.AluOperation.Operation = ALUOperations[BB_XXX_BBB(opcode)];
+        byte bb_xxx_bbb = BB_XXX_BBB(opcode);
+        decoded.AluOperation.Operation = ALUOperations[bb_xxx_bbb];
+        decoded.AluOperation.CarryIn = bb_xxx_bbb == 1;
         
         return decoded;
     }
     
-    protected Decoded FamilySYS(MachineCycle machineCycle)
+    protected Decoded Family11(MachineCycle machineCycle)
     {
         Decoded decoded = new Decoded();
 

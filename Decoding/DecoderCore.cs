@@ -8,21 +8,23 @@ public class DecoderCore : DecoderFamilies
     {
         // CHECK FIXED OPCODES
         if (FixedOpcodes.TryGetValue(opcode, out var value))
-            return FamilySYS(value);
+            return Family11(value);
         
         // CHECK INSTRUCTION FAMILY
         switch ((opcode & 0b1100_0000) >> 6)
         {
             case 0b00:
-                return FamilyIMM(opcode);
+                return Family00(opcode);
             case 0b01:
-                return FamilyREG(opcode);
+                return Family01(opcode);
             case 0b10:
-                return FamilyALU(opcode, false);
+                return Family10(opcode);
             case 0b11:
-                return FamilyALU(opcode, true);
+                throw new Exception("INVALID OPCODE");
         }
 
         return new Decoded();
     }
 }
+
+// 00_110_111

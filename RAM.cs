@@ -3,46 +3,38 @@ using Executing;
 
 public class RAM
 {
+    public Dictionary<ushort, byte> MemoryDump = new Dictionary<ushort, byte>();
+    
     private readonly byte[] Memory = new byte[0x10000]; // 64 KB
-    byte[] program =
-        {
-            0x3E,0x00, 0x06,0x11, 0x0E,0x22, 0x16,0x33,
-            0x1E,0x44, 0x26,0x20, 0x2E,0x00,
-
-            0x77,0x70,0x71,0x72,0x73,
-            0x7E,0x46,0x4E,0x56,0x5E,
-
-            0x78,0x41,0x4A,0x53,0x5F,
-            0x67,0x68,0x7C,0x45,
-
-            0x3E,0x55, 0x06,0xAA,
-            0x77,0x4E,0x70,0x56,
-
-            0x79,0x42,0x4F,0x50,
-
-            0x26,0x20, 0x2E,0x01,
-            0x77,0x70,0x71,0x72,
-            0x7E,0x46,0x4E,0x56  ,0x76      
-        };
-
-
+    
+    private readonly byte[] ROM =
+    {
+        0x3E, 0xFF,   // A=FF
+        0x06, 0x00,   // B=00
+        0x37,         // CY=1
+        0x88,         // A=00 CY=1
+        0x88,         //          //,
+        0x76,
+    };
+    
     public void Init()
     {
-        for (int i = 0; i < program.Length; i++)
-            Memory[i] = program[i];
+        for (int i = 0; i < ROM.Length; i++)
+            Memory[i] = ROM[i];
     }
     
     public void Read(Bus aBus_H, Bus aBus_L, Bus dBus)
     {
-        dBus.Set(Memory[MergeAddress(aBus_H.Get(), aBus_L.Get())]);
+        dBus.Set(Memory[Merge(aBus_H.Get(), aBus_L.Get())]);
     }
 
     public void Write(Bus aBus_H, Bus aBus_L, Bus dBus)
     {
-        Memory[MergeAddress(aBus_H.Get(), aBus_L.Get())] = dBus.Get();
+        Memory[Merge(aBus_H.Get(), aBus_L.Get())] = dBus.Get();
+        MemoryDump[Merge(aBus_H.Get(), aBus_L.Get())] = Memory[Merge(aBus_H.Get(), aBus_L.Get())];
     }
 
-    private ushort MergeAddress(byte high, byte low)
+    private ushort Merge(byte high, byte low)
     {
         return  (ushort)((high << 8) + low);
     }

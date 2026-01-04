@@ -1,3 +1,5 @@
+using i8080_emulator.Executing.Computing;
+
 namespace i8080_emulator.Executing;
 using Signaling;
 
@@ -15,5 +17,11 @@ public partial class DataPath
             if (PC_L == 0)
                 PC_H++;
         }
+
+        // CARRY FLAG CONTROLS
+        if (signals.SideEffect == SideEffect.STC)
+            FLAGS |= (byte)ALUFlags.Carry;
+        if (signals.SideEffect == SideEffect.CMC)
+            FLAGS ^= (byte)ALUFlags.Carry;
     }
 }

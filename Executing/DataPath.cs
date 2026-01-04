@@ -20,6 +20,10 @@ public partial class DataPath
     private byte A, // ACCUMULATOR
         B, C, D, E, // GENERAL REGISTERS
         H, L; // MEMORY ADDRESS REGISTERS
+
+    private byte TMP; // BRIDGE BETWEEN RAM AND REGISTERS
+
+    private byte FLAGS;
     
     private SignalSet signals = new SignalSet();
     
@@ -52,5 +56,17 @@ public partial class DataPath
         Console.WriteLine($"L : {L}");
         Console.WriteLine($"A : {A}");
         Console.WriteLine($"HL : {(ushort)((H << 8) + L)}");
+        Console.WriteLine($"TMP : {TMP}");
+        Console.WriteLine(
+            $"FLAGS : S={(FLAGS >> 7) & 1} Z={(FLAGS >> 6) & 1} AC={(FLAGS >> 4) & 1} P={(FLAGS >> 2) & 1} CY={(FLAGS >> 0) & 1}");
+    }
+
+    public void MemoryDump()
+    {
+        Console.WriteLine();
+        foreach (var slot in RAM.MemoryDump)
+        {
+            Console.WriteLine($"MEMORY[{slot.Key}] : {slot.Value}");
+        }
     }
 }
