@@ -4,6 +4,8 @@ using Signaling;
 
 public partial class DataPath
 {
+    private List<ALUOpcode> ALUOpcodes = new List<ALUOpcode>();
+    
     public void ResolveALU()
     {
         if(signals.AluOperation.Operation == Operation.NONE)
@@ -16,10 +18,11 @@ public partial class DataPath
             B = TMP,
             CR = (byte)(FLAGS & (byte)ALUFlags.Carry) == 1,
         });
+        
+        ALUOpcodes.Add(signals.AluOperation.Opcode);
 
-        if (signals.AluOperation.Opcode != ALUOpcode.CMP)
-            A = Output.Result;
-
+        DBUS.Set(Output.Result);
+        
         FLAGS = Output.Flags;
     }
 }

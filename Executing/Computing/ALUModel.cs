@@ -1,3 +1,5 @@
+using i8080_emulator.Signaling;
+
 namespace i8080_emulator.Executing.Computing;
 
 public struct ALUInput
@@ -44,4 +46,5 @@ public enum ALUOpcode
 {
     NONE,
     ADD, ADC, SUB, SBB, ANA, XRA, ORA, CMP,
+    INR, DCR, INX, DCX
 }

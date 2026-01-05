@@ -1,5 +1,3 @@
-using i8080_emulator.Signaling;
-
 namespace i8080_emulator.Decoding;
 
 public class DecoderCore : DecoderFamilies
@@ -14,11 +12,15 @@ public class DecoderCore : DecoderFamilies
         switch ((opcode & 0b1100_0000) >> 6)
         {
             case 0b00:
-                return Family00(opcode);
+                if (BB_BBB_XXX(opcode) != 4 && BB_BBB_XXX(opcode) != 5)
+                {
+                    return Family00(opcode);
+                }
+                return Family10(opcode, false);
             case 0b01:
                 return Family01(opcode);
             case 0b10:
-                return Family10(opcode);
+                return Family10(opcode, true);
             case 0b11:
                 throw new Exception("INVALID OPCODE");
         }

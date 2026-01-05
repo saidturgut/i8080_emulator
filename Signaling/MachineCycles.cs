@@ -57,6 +57,7 @@ public partial class ControlUnit
     private static SignalSet ALU_EXECUTE(byte tState) => tState switch
     {
         1 => new SignalSet { AluOperation = decoded.AluOperation },
+        2 => new SignalSet { DataLatcher = decoded.DataLatcher },
         _ => throw ILLEGAL_T_STATE()
     };
     

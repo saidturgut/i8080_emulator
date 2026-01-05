@@ -22,14 +22,19 @@ public class DecoderModel
 
     protected readonly Dictionary<ALUOpcode, Operation> ALUTable = new()
     {
-        { ALUOpcode.ADD, Operation.ADD },// 000
-        { ALUOpcode.ADC, Operation.ADD },// 001
-        { ALUOpcode.SUB, Operation.SUB },// 010
-        { ALUOpcode.SBB, Operation.SUB },// 011
-        { ALUOpcode.ANA, Operation.AND },// 100
-        { ALUOpcode.XRA, Operation.XOR },// 101
-        { ALUOpcode.ORA, Operation.OR },// 110
-        { ALUOpcode.CMP, Operation.SUB },// 111
+        // 10 FAMILY
+        { ALUOpcode.ADD, Operation.ADD }, // 000
+        { ALUOpcode.ADC, Operation.ADD }, // 001
+        { ALUOpcode.SUB, Operation.SUB }, // 010
+        { ALUOpcode.SBB, Operation.SUB }, // 011
+        { ALUOpcode.ANA, Operation.AND }, // 100
+        { ALUOpcode.XRA, Operation.XOR }, // 101
+        { ALUOpcode.ORA, Operation.OR }, // 110
+        { ALUOpcode.CMP, Operation.SUB }, // 111
+
+        // 00 FAMILY
+        { ALUOpcode.INR, Operation.ADD }, // 100
+        { ALUOpcode.DCR, Operation.SUB }, // 101
     };
     
     protected readonly DataDriver[] DataDrivers =

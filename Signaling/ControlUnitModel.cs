@@ -25,7 +25,7 @@ public partial class ControlUnit
             { MachineCycle.RAM_WRITE, 3 },
             { MachineCycle.BUS_LATCH, 2 },
             { MachineCycle.TMP_LATCH, 2 },
-            { MachineCycle.ALU_EXECUTE, 1 },
+            { MachineCycle.ALU_EXECUTE, 2 },
             
             { MachineCycle.STC, 1 },
             { MachineCycle.CMC, 1 },
