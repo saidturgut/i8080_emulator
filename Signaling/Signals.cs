@@ -6,7 +6,7 @@ public struct SignalSet()
     public AddressDriver AddressDriver = AddressDriver.NONE;
     public DataDriver DataDriver = DataDriver.NONE;
     public DataLatcher DataLatcher = DataLatcher.NONE;
-    public ALUOperation AluOperation = new ALUOperation();
+    public ALUOperation? AluOperation = null;
     public SideEffect SideEffect = SideEffect.NONE;
 }
 

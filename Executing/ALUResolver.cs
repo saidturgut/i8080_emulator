@@ -4,25 +4,31 @@ using Signaling;
 
 public partial class DataPath
 {
-    private List<ALUOpcode> ALUOpcodes = new List<ALUOpcode>();
-    
     public void ResolveALU()
     {
-        if(signals.AluOperation.Operation == Operation.NONE)
+        if(signals.AluOperation is not { })
             return;
-
-        ALUOutput Output = ALU.Compute(new ALUInput
+        
+        var nullable = signals.AluOperation!.Value;
+        
+        ALUInput input = new ALUInput
         {
-            ALUOperation = signals.AluOperation,
-            A = A,
-            B = TMP,
+            ALUOperation = nullable,
             CR = (byte)(FLAGS & (byte)ALUFlags.Carry) == 1,
-        });
-        
-        ALUOpcodes.Add(signals.AluOperation.Opcode);
+            A = nullable.A == DataLatcher.A ? A : TMP,
+            B = nullable.B != DataDriver.NONE ? TMP : (byte)1
+        };
 
-        DBUS.Set(Output.Result);
+        ALUOutput output = ALU.Compute(input);
         
-        FLAGS = Output.Flags;
+        DBUS.Set(output.Result);
+
+        FLAGS = FLAGS_LATCH(output.Flags, 
+            ALUModel.FlagMasks[nullable.FlagMask]);
+    }
+
+    private byte FLAGS_LATCH(byte newFlags, ALUFlags mask)
+    {
+        return (byte)((FLAGS & (byte)~mask) | (newFlags & (byte)mask));
     }
 }

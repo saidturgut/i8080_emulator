@@ -2,6 +2,15 @@ using i8080_emulator.Signaling;
 
 namespace i8080_emulator.Executing.Computing;
 
+public static class ALUModel
+{
+    public static readonly ALUFlags[] FlagMasks =
+    [
+        ALUFlags.Sign | ALUFlags.Zero | ALUFlags.AuxCarry | ALUFlags.Parity | ALUFlags.Carry, // ALL
+        ALUFlags.Sign | ALUFlags.Zero | ALUFlags.AuxCarry | ALUFlags.Parity, // NO CARRY
+    ];
+}
+
 public struct ALUInput
 {
     public ALUOperation ALUOperation;
@@ -33,7 +42,10 @@ public struct ALUOperation()
 {
     public Operation Operation = Operation.NONE;
     public ALUOpcode Opcode = ALUOpcode.NONE;
+    public DataLatcher A = 0;
+    public DataDriver B = 0;
     public bool UseCarry = false;
+    public byte FlagMask = 0;
 }
 
 public enum Operation

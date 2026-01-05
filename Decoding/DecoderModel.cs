@@ -20,7 +20,7 @@ public class DecoderModel
             { 0x3F, MachineCycle.CMC },
         };
 
-    protected readonly Dictionary<ALUOpcode, Operation> ALUTable = new()
+    protected readonly Dictionary<ALUOpcode, Operation> ALU_10 = new()
     {
         // 10 FAMILY
         { ALUOpcode.ADD, Operation.ADD }, // 000
@@ -31,11 +31,19 @@ public class DecoderModel
         { ALUOpcode.XRA, Operation.XOR }, // 101
         { ALUOpcode.ORA, Operation.OR }, // 110
         { ALUOpcode.CMP, Operation.SUB }, // 111
-
+    };
+    
+    protected readonly Dictionary<ALUOpcode, Operation> ALU_00 = new()
+    {
         // 00 FAMILY
         { ALUOpcode.INR, Operation.ADD }, // 100
         { ALUOpcode.DCR, Operation.SUB }, // 101
     };
+
+    protected readonly ALUOpcode[] CarryUsers =
+    [
+        ALUOpcode.ADC, ALUOpcode.SBB,
+    ];
     
     protected readonly DataDriver[] DataDrivers =
     {

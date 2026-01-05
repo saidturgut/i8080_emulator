@@ -9,7 +9,33 @@ public class RAM
     
     private readonly byte[] ROM =
     [
-        0x76
+// --- Force CY = 1 ---
+        0x3E, 0xFF,       // MVI A,FF
+        0x06, 0x01,       // MVI B,01
+        0x80,             // ADD B  (A=00, CY=1)
+
+        // --- Hammer INR/DCR (CY must survive) ---
+        0x0E, 0x0F,       // MVI C,0F
+        0x0C,             // INR C  (10, AC=1)
+        0x0D,             // DCR C  (0F, AC=1)
+
+        0x0E, 0xFF,       // MVI C,FF
+        0x0C,             // INR C  (00, Z=1)
+        0x0D,             // DCR C  (FF, S=1)
+
+        // --- Multiple wraps ---
+        0x16, 0x7F,       // MVI D,7F
+        0x14,             // INR D  (80)
+        0x15,             // DCR D  (7F)
+
+        0x16, 0x00,       // MVI D,00
+        0x15,             // DCR D  (FF)
+
+        // --- Final noise ---
+        0x04,             // INR B
+        0x05,             // DCR B
+
+        0x76              // HLT
     ];
     
     public void Init()

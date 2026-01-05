@@ -23,7 +23,7 @@ public partial class DataPath
 
     private byte TMP; // BRIDGE BETWEEN RAM AND REGISTERS
 
-    private byte FLAGS;
+    private byte FLAGS = 0x2;
     
     private SignalSet signals = new SignalSet();
     
@@ -56,7 +56,6 @@ public partial class DataPath
         Console.WriteLine($"L : {L}");
         Console.WriteLine($"A : {A}");
         Console.WriteLine($"HL : {(ushort)((H << 8) + L)}");
-        Console.WriteLine($"TMP : {TMP}");
         Console.WriteLine(
             $"FLAGS : S={(FLAGS >> 7) & 1} Z={(FLAGS >> 6) & 1} AC={(FLAGS >> 4) & 1} P={(FLAGS >> 2) & 1} CY={(FLAGS >> 0) & 1}");
     }

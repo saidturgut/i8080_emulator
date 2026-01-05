@@ -1,6 +1,6 @@
 namespace i8080_emulator.Decoding;
 
-public class DecoderCore : DecoderFamilies
+public class DecoderCore : DecoderMultiplexer
 {
     public Decoded Decode(byte opcode)
     {
