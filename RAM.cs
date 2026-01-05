@@ -9,6 +9,7 @@ public class RAM
     
     private readonly byte[] ROM =
     [
+        0x76
     ];
     
     public void Init()

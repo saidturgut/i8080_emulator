@@ -11,15 +11,17 @@ public partial class DataPath
         // PROGRAM COUNTER
         if (signals.AddressDriver == AddressDriver.PC)
         {
-            ABUS_L.Set(PC_L);
-            ABUS_H.Set(PC_H);
+            ABUS_L.Set(Registers[R.PC_L].Get());
+            ABUS_H.Set(Registers[R.PC_H].Get());
+            return;
         }
         
         // TEMP ADDRESS REGISTER
         if (signals.AddressDriver == AddressDriver.HL)
         {
-            ABUS_L.Set(L);
-            ABUS_H.Set(H);
+            ABUS_L.Set(Registers[R.L].Get());
+            ABUS_H.Set(Registers[R.H].Get());
+            return;
         }
     }
 }

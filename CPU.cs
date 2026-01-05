@@ -24,10 +24,11 @@ public class CPU
     private void Tick()
     {
         DataPath.Clear();
-        DataPath.Set
-        (ControlUnit.Emit(DataPath.IR));
+        DataPath.Set(
+        ControlUnit.Emit(
+        DataPath.Registers[R.IR].Get()));
         
-        DataPath.ResolveALU();
+        DataPath.ControlALU();
         DataPath.AddressBuffer();
         DataPath.MultiplexerDrive();
         

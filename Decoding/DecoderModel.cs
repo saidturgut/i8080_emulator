@@ -69,7 +69,7 @@ public class DecoderModel
         DataLatcher.A,
     };
 
-    protected readonly SideEffect[] RegisterPairs =
+    protected readonly SideEffect[] IncrementOpcodes =
     {
         SideEffect.BC_INC, // 00
         SideEffect.DE_INC, // 01

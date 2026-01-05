@@ -24,11 +24,10 @@ public partial class DecoderMultiplexer : DecoderModel
         return decoded;
     }
 
-
     protected Decoded INX_DCX(byte opcode)
     {
         Decoded decoded = new() { SideEffect = 
-            RegisterPairs[((opcode & 0x30) >> 4) + ((opcode & 0x8) >> 3) * 4]
+            IncrementOpcodes[((opcode & 0x30) >> 4) + ((opcode & 0x8) >> 3) * 4]
             
         };
         decoded.Table.Add(MachineCycle.INX_DCX);

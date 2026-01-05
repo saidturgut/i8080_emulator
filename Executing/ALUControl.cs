@@ -4,7 +4,7 @@ using Signaling;
 
 public partial class DataPath
 {
-    public void ResolveALU()
+    public void ControlALU()
     {
         if(signals.AluOperation is not { })
             return;
@@ -15,20 +15,18 @@ public partial class DataPath
         {
             ALUOperation = nullable,
             CR = (byte)(FLAGS & (byte)ALUFlags.Carry) == 1,
-            A = nullable.A == DataLatcher.A ? A : TMP,
-            B = nullable.B != DataDriver.NONE ? TMP : (byte)1
+            
+            A = DataLatchers[nullable.A].Get(),
+            B = nullable.B != DataDriver.NONE ? 
+                DataDrivers[nullable.B].Get() : (byte)1
         };
 
         ALUOutput output = ALU.Compute(input);
         
         DBUS.Set(output.Result);
 
-        FLAGS = FLAGS_LATCH(output.Flags, 
-            ALUModel.FlagMasks[nullable.FlagMask]);
-    }
+        ALUFlags mask = ALUModel.FlagMasks[nullable.FlagMask];
 
-    private byte FLAGS_LATCH(byte newFlags, ALUFlags mask)
-    {
-        return (byte)((FLAGS & (byte)~mask) | (newFlags & (byte)mask));
+        FLAGS = (byte)((FLAGS & (byte)~mask) | (output.Result & (byte)mask));
     }
 }

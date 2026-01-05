@@ -29,8 +29,8 @@ public partial class DecoderMultiplexer
     {
         Decoded decoded = new Decoded
         {
-            DataDriver = DataDrivers[BB_BBB_XXX(opcode)],
-            DataLatcher = DataLatcher.A,
+            DataDriver = DataDrivers[BB_BBB_XXX(opcode)],// OPERAND
+            DataLatcher = DataLatcher.A, // DESTINATION
             AluOperation = new ALUOperation(),
         };
         var nullable = new ALUOperation();
@@ -38,8 +38,8 @@ public partial class DecoderMultiplexer
         byte bb_xxx_bbb = BB_XXX_BBB(opcode);
         nullable.Operation = ALU_10.ElementAt(bb_xxx_bbb).Value;
         nullable.Opcode = ALU_10.ElementAt(bb_xxx_bbb).Key;
-        nullable.A = DataLatcher.A;
-        nullable.B = DataDriver.TMP;
+        nullable.A = DataLatcher.A; // DESTINATION
+        nullable.B = DataDriver.TMP; // OPERAND GOES TO TMP
         nullable.FlagMask = 0;
         
         decoded.AluOperation = nullable;
@@ -50,8 +50,8 @@ public partial class DecoderMultiplexer
     {
         Decoded decoded = new Decoded
         {            
-            DataDriver = DataDrivers[BB_XXX_BBB(opcode)],
-            DataLatcher = DataLatchers[BB_XXX_BBB(opcode)],
+            DataDriver = DataDrivers[BB_XXX_BBB(opcode)], // OPERAND AND DESTINATION 
+            DataLatcher = DataLatchers[BB_XXX_BBB(opcode)],  // IS SAME
             AluOperation = new ALUOperation(),
         };
         var nullable = new ALUOperation();
@@ -59,8 +59,8 @@ public partial class DecoderMultiplexer
         byte bb_bbb_xxx = (byte)(BB_BBB_XXX(opcode) - 4);
         nullable.Operation = ALU_00.ElementAt(bb_bbb_xxx).Value;
         nullable.Opcode = ALU_00.ElementAt(bb_bbb_xxx).Key;
-        nullable.A = DataLatcher.TMP;
-        nullable.B = DataDriver.NONE;
+        nullable.A = DataLatcher.TMP; // DESTINATION, IT GOES TO REGISTER ON T2
+        nullable.B = DataDriver.NONE; // IT'S GONNA BE 1
         nullable.FlagMask = 1;
 
         decoded.AluOperation = nullable;

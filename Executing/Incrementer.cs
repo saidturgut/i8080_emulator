@@ -9,65 +9,24 @@ public partial class DataPath
     {
         if(signals.SideEffect is SideEffect.NONE or SideEffect.DECODE)
             return;
-        
-        // PROGRAM COUNTER
-        if (signals.SideEffect == SideEffect.PC_INC)
-        {
-            PC_L++;
-            if (PC_L == 0)
-                PC_H++;
-        }
-        
-        if (signals.SideEffect == SideEffect.SP_INC)
-        {
-            SP_L++;
-            if (SP_L == 0)
-                SP_H++;
-        }
-        if (signals.SideEffect == SideEffect.SP_DCR)
-        {
-            SP_L--;
-            if (SP_L == 0xFF)
-                SP_H--;
-        }
-        
-        if (signals.SideEffect == SideEffect.BC_INC)
-        {
-            C++;
-            if (C == 0)
-                B++;
-        }
-        if (signals.SideEffect == SideEffect.BC_DCR)
-        {
-            C--;
-            if (C == 0xFF)
-                B--;
-        }
-        if (signals.SideEffect == SideEffect.DE_INC)
-        {
-            E++;
-            if (E == 0)
-                D++;
-        }
-        if (signals.SideEffect == SideEffect.DE_DCR)
-        {
-            E--;
-            if (E == 0xFF)
-                D--;
-        }
-        if (signals.SideEffect == SideEffect.HL_INC)
-        {
-            L++;
-            if (L == 0)
-                H++;
-        }
-        if (signals.SideEffect == SideEffect.HL_DCR)
-        {
-            L--;
-            if (L == 0xFF)
-                H--;
-        }
 
+        if (RegisterPairs.TryGetValue(signals.SideEffect, out var pair))
+        {
+            if (!pair.Decrement)
+            {
+                pair.Pair[0].Set((byte)(pair.Pair[0].Get() + 1));
+                if(pair.Pair[0].Get() == 0)
+                    pair.Pair[1].Set((byte)(pair.Pair[1].Get() + 1));
+            }
+            else
+            {
+                pair.Pair[0].Set((byte)(pair.Pair[0].Get() - 1));
+                if(pair.Pair[0].Get() == 0xFF)
+                    pair.Pair[1].Set((byte)(pair.Pair[1].Get() - 1));
+            }
+            return;
+        }
+        
         // CARRY FLAG CONTROLS
         if (signals.SideEffect == SideEffect.STC)
             FLAGS |= (byte)ALUFlags.Carry;
