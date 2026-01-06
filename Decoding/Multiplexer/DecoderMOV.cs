@@ -1,4 +1,5 @@
-namespace i8080_emulator.Decoding;
+namespace i8080_emulator.Decoding.Multiplexer;
+using Signaling.Cycles;
 using Signaling;
 
 public partial class DecoderMultiplexer
@@ -22,7 +23,7 @@ public partial class DecoderMultiplexer
             if (decoded.DataDriver == DataDriver.RAM)
                 decoded.Table.Add(MachineCycle.RAM_READ);
             
-            decoded.Table.Add(MachineCycle.BUS_LATCH);
+            decoded.Table.Add(MachineCycle.INTERNAL_LATCH);
         }
         
         return decoded; // 01 110 110 (0x76) is already HLT

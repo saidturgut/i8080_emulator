@@ -14,10 +14,11 @@ public class DataPathModel
         { R.TMP, new Register() }, // TEMP REGISTER
         { R.H, new Register() }, { R.L, new Register() }, // ADDRESS POINTER
     };
- 
     protected Dictionary<DataDriver, Register> DataDrivers = new();
     protected Dictionary<DataLatcher, Register> DataLatchers = new();
-    protected Dictionary<SideEffect, RegisterPair> RegisterPairs = new();
+    
+    private Dictionary<RP, Register[]> RegisterPairs = new();
+    protected Dictionary<SideEffect, IncrementPair> PairIncrements = new();
     
     public virtual void Init()
     {
@@ -37,21 +38,31 @@ public class DataPathModel
             { DataLatcher.B , Registers[R.B] }, { DataLatcher.C , Registers[R.C] },
             { DataLatcher.D , Registers[R.D] }, { DataLatcher.E , Registers[R.E] },
             { DataLatcher.H , Registers[R.H] }, { DataLatcher.L , Registers[R.L] },
+            
+            { DataLatcher.SP_H , Registers[R.SP_H] }, { DataLatcher.SP_L , Registers[R.SP_L] },
         };
         
         RegisterPairs = new()
         {
-            { SideEffect.PC_INC, new RegisterPair { Pair = [Registers[R.PC_L], Registers[R.PC_H]] } },
-            { SideEffect.BC_INC, new RegisterPair { Pair = [Registers[R.C], Registers[R.B]] } }, { SideEffect.BC_DCR, new RegisterPair { Pair = [Registers[R.C], Registers[R.B]], Decrement = true} },
-            { SideEffect.DE_INC, new RegisterPair { Pair = [Registers[R.E], Registers[R.D]] } }, { SideEffect.DE_DCR, new RegisterPair { Pair = [Registers[R.E], Registers[R.D]], Decrement = true } },
-            { SideEffect.HL_INC, new RegisterPair { Pair = [Registers[R.L], Registers[R.H]] } }, { SideEffect.HL_DCR, new RegisterPair { Pair = [Registers[R.L], Registers[R.H]], Decrement = true } },
-            { SideEffect.SP_INC, new RegisterPair { Pair = [Registers[R.SP_L], Registers[R.SP_H]] } }, { SideEffect.SP_DCR, new RegisterPair { Pair = [Registers[R.SP_L], Registers[R.SP_H]], Decrement = true } },
+            { RP.PC, [Registers[R.PC_L], Registers[R.PC_H]] },
+            { RP.BC, [Registers[R.C], Registers[R.B]] },
+            { RP.DE, [Registers[R.E], Registers[R.D]] },
+            { RP.HL, [Registers[R.L], Registers[R.H]] }, 
+            { RP.SP, [Registers[R.SP_L], Registers[R.SP_H]] },
         };
-
+        
+        PairIncrements = new()
+        {
+            { SideEffect.PC_INC, new IncrementPair { Pair = RegisterPairs[RP.PC] } },
+            { SideEffect.BC_INC, new IncrementPair { Pair = RegisterPairs[RP.BC] } }, { SideEffect.BC_DCR, new IncrementPair { Pair = RegisterPairs[RP.BC], Decrement = true} },
+            { SideEffect.DE_INC, new IncrementPair { Pair = RegisterPairs[RP.DE] } }, { SideEffect.DE_DCR, new IncrementPair { Pair = RegisterPairs[RP.DE], Decrement = true } },
+            { SideEffect.HL_INC, new IncrementPair { Pair = RegisterPairs[RP.HL] } }, { SideEffect.HL_DCR, new IncrementPair { Pair = RegisterPairs[RP.HL], Decrement = true } },
+            { SideEffect.SP_INC, new IncrementPair { Pair = RegisterPairs[RP.SP] } }, { SideEffect.SP_DCR, new IncrementPair { Pair = RegisterPairs[RP.SP], Decrement = true } },
+        };
     }
 }
 
-public struct Register
+public class Register
 {
     private byte Value;
 
@@ -68,10 +79,15 @@ public enum R
     PC_H, PC_L, IR, SP_H, SP_L,
     A, B, C, D, E, 
     TMP, H, L,
-    FLAGS,
 }
 
-public struct RegisterPair()
+public enum RP
+{
+    NONE,
+    PC, SP, BC, DE, HL
+}
+
+public class IncrementPair
 {
     public Register[] Pair = [];
     public bool Decrement = false;

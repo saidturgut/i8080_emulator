@@ -1,5 +1,6 @@
-namespace i8080_emulator.Decoding;
+namespace i8080_emulator.Decoding.Multiplexer;
 using Executing.Computing;
+using Signaling.Cycles;
 using Signaling;
 
 public partial class DecoderMultiplexer

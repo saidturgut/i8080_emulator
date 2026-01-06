@@ -18,7 +18,6 @@ public partial class DataPath
         if (DataDrivers.ContainsKey(signals.DataDriver))
         {
             DBUS.Set(DataDrivers[signals.DataDriver].Get());
-            return;
         }
     }
     
@@ -37,7 +36,8 @@ public partial class DataPath
         if (DataLatchers.ContainsKey(signals.DataLatcher))
         {
             DataLatchers[signals.DataLatcher].Set(DBUS.Get());
-            return;
+            
+            Console.WriteLine(signals.DataLatcher);
         }
     }
 }

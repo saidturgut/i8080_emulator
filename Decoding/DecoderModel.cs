@@ -1,5 +1,7 @@
 namespace i8080_emulator.Decoding;
 using Executing.Computing;
+using Signaling.Cycles;
+using Executing;
 using Signaling;
 
 public class DecoderModel
@@ -46,27 +48,29 @@ public class DecoderModel
     ];
     
     protected readonly DataDriver[] DataDrivers =
-    {
-        DataDriver.B,
-        DataDriver.C,
-        DataDriver.D,
-        DataDriver.E,
-        DataDriver.H,
-        DataDriver.L,
+    [
+        DataDriver.B, DataDriver.C,
+        DataDriver.D, DataDriver.E,
+        DataDriver.H, DataDriver.L,
         DataDriver.RAM,
-        DataDriver.A,
-    };
+        DataDriver.A
+    ];
     
     protected readonly DataLatcher[] DataLatchers =
-    {
-        DataLatcher.B,
-        DataLatcher.C,
-        DataLatcher.D,
-        DataLatcher.E,
-        DataLatcher.H,
-        DataLatcher.L,
+    [
+        DataLatcher.B, DataLatcher.C,
+        DataLatcher.D, DataLatcher.E,
+        DataLatcher.H, DataLatcher.L,
         DataLatcher.RAM,
-        DataLatcher.A,
+        DataLatcher.A
+    ];
+
+    protected readonly DataLatcher[][] RegisterPairs =
+    {
+        [DataLatcher.C, DataLatcher.B],
+        [DataLatcher.E, DataLatcher.D],
+        [DataLatcher.L, DataLatcher.H],
+        [DataLatcher.SP_L, DataLatcher.SP_H],
     };
 
     protected readonly SideEffect[] IncrementOpcodes =
@@ -90,4 +94,7 @@ public class DecoderModel
     {
         return (byte)(opcode & 0b00_000_111);
     }
+    
+    protected int GetRegisterPair(byte opcode) =>
+        (((opcode & 0x30) >> 4) + ((opcode & 0x8) >> 3) * 4);
 }

@@ -1,6 +1,5 @@
-using i8080_emulator.Signaling;
-
 namespace i8080_emulator.Executing.Computing;
+using Signaling;
 
 public static class ALUModel
 {
@@ -11,12 +10,12 @@ public static class ALUModel
     ];
 }
 
-public struct ALUInput
+public readonly struct ALUInput(ALUOperation aluOperation, byte a, byte b, bool cr)
 {
-    public ALUOperation ALUOperation;
-    public byte A;
-    public byte B;
-    public bool CR;
+    public readonly ALUOperation ALUOperation = aluOperation;
+    public readonly byte A = a;
+    public readonly byte B = b;
+    public readonly bool CR = cr;
 }
 
 public struct ALUOutput()

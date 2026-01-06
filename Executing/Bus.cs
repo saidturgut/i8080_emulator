@@ -7,6 +7,7 @@ public class Bus
 
     public void Clear()
     {
+        value = 0;
         driven = false;
     }
     

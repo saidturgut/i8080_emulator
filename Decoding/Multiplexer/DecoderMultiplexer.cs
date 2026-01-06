@@ -1,4 +1,5 @@
-namespace i8080_emulator.Decoding;
+namespace i8080_emulator.Decoding.Multiplexer;
+using Signaling.Cycles;
 using Signaling;
 
 public partial class DecoderMultiplexer : DecoderModel
@@ -18,7 +19,7 @@ public partial class DecoderMultiplexer : DecoderModel
         else
         {
             decoded.DataDriver = DataDriver.TMP;
-            decoded.Table.Add(MachineCycle.BUS_LATCH);
+            decoded.Table.Add(MachineCycle.INTERNAL_LATCH);
         }
         
         return decoded;
@@ -27,19 +28,19 @@ public partial class DecoderMultiplexer : DecoderModel
     protected Decoded INX_DCX(byte opcode)
     {
         Decoded decoded = new() { SideEffect = 
-            IncrementOpcodes[((opcode & 0x30) >> 4) + ((opcode & 0x8) >> 3) * 4]
-            
-        };
+            IncrementOpcodes[GetRegisterPair(opcode)], };
+        
         decoded.Table.Add(MachineCycle.INX_DCX);
         return decoded;
     }
-    
-    protected Decoded FamilyFXD(MachineCycle machineCycle)
-    {
-        Decoded decoded = new Decoded();
 
-        if (machineCycle != MachineCycle.NONE) 
-            decoded.Table.Add(machineCycle);
+    protected Decoded LXI(byte opcode)
+    {
+        Decoded decoded = new() { RegisterPair = 
+            RegisterPairs[GetRegisterPair(opcode)] };
+        
+        decoded.Table.Add(MachineCycle.LXI_LOW);
+        decoded.Table.Add(MachineCycle.LXI_HIGH);
         
         return decoded;
     }

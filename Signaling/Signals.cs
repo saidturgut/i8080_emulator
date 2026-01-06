@@ -1,5 +1,6 @@
 namespace i8080_emulator.Signaling;
 using Executing.Computing;
+using Executing;
 
 public struct SignalSet()
 {
@@ -36,12 +37,12 @@ public enum DataLatcher
     A,
     TMP,
     IR,
+    SP_H, SP_L
 }
 
 public enum SideEffect
 {
     NONE,
-    DECODE,
     PC_INC,
     
     SP_INC, SP_DCR,

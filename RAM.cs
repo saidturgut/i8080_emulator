@@ -9,6 +9,7 @@ public class RAM
     
     private readonly byte[] ROM =
     [
+        0x01, 0xAA, 0x55,
         0x76
     ];
     

@@ -10,17 +10,13 @@ public partial class DataPath
             return;
         
         var nullable = signals.AluOperation!.Value;
-        
-        ALUInput input = new ALUInput
-        {
-            ALUOperation = nullable,
-            CR = (byte)(FLAGS & (byte)ALUFlags.Carry) == 1,
-            
-            A = DataLatchers[nullable.A].Get(),
-            B = nullable.B != DataDriver.NONE ? 
-                DataDrivers[nullable.B].Get() : (byte)1
-        };
 
+        ALUInput input = new ALUInput(
+            nullable, // ALU OPERATION
+            DataLatchers[nullable.A].Get(), // A
+            nullable.B != DataDriver.NONE ? DataDrivers[nullable.B].Get() : (byte)1, // B
+            (byte)(FLAGS & (byte)ALUFlags.Carry) == 1); // CARRY
+        
         ALUOutput output = ALU.Compute(input);
         
         DBUS.Set(output.Result);

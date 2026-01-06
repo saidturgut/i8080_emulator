@@ -1,16 +1,15 @@
-using i8080_emulator.Executing.Computing;
-
 namespace i8080_emulator.Executing;
+using Computing;
 using Signaling;
 
 public partial class DataPath
 {
     public void Incrementer()
     {
-        if(signals.SideEffect is SideEffect.NONE or SideEffect.DECODE)
+        if(signals.SideEffect == SideEffect.NONE)
             return;
 
-        if (RegisterPairs.TryGetValue(signals.SideEffect, out var pair))
+        if (PairIncrements.TryGetValue(signals.SideEffect, out var pair))
         {
             if (!pair.Decrement)
             {

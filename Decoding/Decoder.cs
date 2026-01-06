@@ -1,4 +1,5 @@
 namespace i8080_emulator.Decoding;
+using Multiplexer;
 
 public class Decoder : DecoderMultiplexer
 {
@@ -13,11 +14,18 @@ public class Decoder : DecoderMultiplexer
         {
             case 0b00:
                 if (BB_BBB_XXX(opcode) == 0b100 || BB_BBB_XXX(opcode) == 0b101)
+                {
                     return FamilyALU(opcode, false);
+                }
 
                 if (BB_BBB_XXX(opcode) == 0b011)
                 {
                     return INX_DCX(opcode);
+                }
+
+                if (BB_BBB_XXX(opcode) == 0b001)
+                {
+                    return LXI(opcode);
                 }
                 
                 return Family00(opcode);

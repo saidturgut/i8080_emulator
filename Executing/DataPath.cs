@@ -19,15 +19,19 @@ public partial class DataPath : DataPathModel
     public override void Init()
     {
         base.Init();
-        
-        Registers[R.A].Set(0x12);
-        Registers[R.E].Set(0x34);
-        
+        /*
+        Registers[R.B].Set(0);
+        Registers[R.C].Set(0xFF);
+        Registers[R.D].Set(0xFF);
+        Registers[R.E].Set(0xFF);
+        Registers[R.H].Set(0x12);
+        Registers[R.L].Set(0xFE);
+        */
         RAM.Init();
     }
     
     public void Clear()
-    {        
+    {
         DBUS.Clear();
         ABUS_H.Clear();
         ABUS_L.Clear();
@@ -42,6 +46,7 @@ public partial class DataPath : DataPathModel
     {
         Console.WriteLine($"PROGRAM COUNTER : {(ushort)((Registers[R.PC_H].Get() << 8) + Registers[R.PC_L].Get())}");
         Console.WriteLine($"IR : {Registers[R.IR].Get()}");
+        Console.WriteLine($"TMP : {Registers[R.TMP].Get()}");
         Console.WriteLine($"B : {Registers[R.B].Get()}");
         Console.WriteLine($"C : {Registers[R.C].Get()}");
         Console.WriteLine($"D : {Registers[R.D].Get()}");

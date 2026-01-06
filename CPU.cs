@@ -16,6 +16,8 @@ public class CPU
         while (!ControlUnit.HALT)
         {
             Tick();
+            
+            Thread.Sleep(300);
         }
         
         DataPath.MemoryDump();
@@ -23,10 +25,10 @@ public class CPU
 
     private void Tick()
     {
-        DataPath.Clear();
         DataPath.Set(
-        ControlUnit.Emit(
-        DataPath.Registers[R.IR].Get()));
+        ControlUnit.Emit());
+        
+        DataPath.Clear();
         
         DataPath.ControlALU();
         DataPath.AddressBuffer();
@@ -37,6 +39,8 @@ public class CPU
 
         DataPath.Debug();
         
+        ControlUnit.Decode(
+        DataPath.Registers[R.IR].Get());
         ControlUnit.Advance();
     }
 }
