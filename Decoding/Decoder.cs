@@ -15,8 +15,9 @@ public class Decoder : DecoderMultiplexer
             case 0b00:
                 switch (BB_BBB_XXX(opcode))
                 {
-                    case 0b100:
-                    case 0b101: return FamilyALU(opcode, false);
+                    case 0b111: return ROTATE(opcode);
+                    case 0b101:
+                    case 0b100: return FamilyALU(opcode, false);
                     case 0b011: return INX_DCX(opcode);
                     case 0b010:
                     {

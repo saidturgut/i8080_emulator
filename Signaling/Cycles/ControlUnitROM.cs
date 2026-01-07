@@ -25,8 +25,9 @@ public partial class ControlUnitROM
 
         { MachineCycle.STC, STC },
         { MachineCycle.CMC, CMC },
+        { MachineCycle.CMA, CMA },
         { MachineCycle.INX_DCX, INX_DCX },
-        
+
         { MachineCycle.RAM_READ_H, RAM_READ_H },
         { MachineCycle.RAM_WRITE_H, RAM_WRITE_H },
     };
@@ -48,8 +49,8 @@ public enum MachineCycle
 
     EMPTY, //FIXED INSTRUCTIONS
     
-    STC, CMC,
-    INX_DCX,
+    STC, CMC, CMA,
+    INX_DCX, 
     
     RAM_READ_H, RAM_WRITE_H,
 }

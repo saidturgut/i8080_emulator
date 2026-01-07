@@ -1,6 +1,6 @@
 namespace i8080_emulator.Executing.Computing;
 
-public class ALU
+public partial class ALU
 {
     public ALUOutput Compute(ALUInput input)
     {
@@ -14,8 +14,8 @@ public class ALU
                 byte carry = (byte)(input is { FlagCY: true, CarryUser: true } ? 1 : 0);
                 result = input.A + input.B + carry;
                 
-                if (((input.A & 0x0F) + (input.B & 0x0F) + carry) > 0x0F) output.Flags |= (byte)ALUFlags.AuxCarry;
-                if (result > 0xFF) output.Flags |= (byte)ALUFlags.Carry;
+                if (((input.A & 0x0F) + (input.B & 0x0F) + carry) > 0x0F) output.Flags |= (byte)ALUFlag.AuxCarry;
+                if (result > 0xFF) output.Flags |= (byte)ALUFlag.Carry;
                 break;
             }
             case Operation.SUB:
@@ -28,15 +28,15 @@ public class ALU
                 
                 result = input.A + (~input.B & 0xFF) + carry;
                 
-                if ((input.A & 0x0F) - (input.B & 0x0F) - (1 - carry) < 0) output.Flags |= (byte)ALUFlags.AuxCarry;
-                if (result < 0x100) output.Flags |= (byte)ALUFlags.Carry;
+                if ((input.A & 0x0F) - (input.B & 0x0F) - (1 - carry) < 0) output.Flags |= (byte)ALUFlag.AuxCarry;
+                if (result < 0x100) output.Flags |= (byte)ALUFlag.Carry;
                 break;
             }
             case Operation.AND:
             {
                 result = input.A & input.B;
                 
-                output.Flags |= (byte)ALUFlags.AuxCarry;
+                output.Flags |= (byte)ALUFlag.AuxCarry;
                 break;
             }
             case Operation.XOR:
@@ -50,9 +50,9 @@ public class ALU
                 break;
             }
         }
-        if ((result & 0x80) != 0) output.Flags |= (byte)ALUFlags.Sign;
-        if (result == 0) output.Flags |= (byte)ALUFlags.Zero;
-        if (EvenParity((byte)result)) output.Flags |= (byte)ALUFlags.Parity;
+        if ((result & 0x80) != 0) output.Flags |= (byte)ALUFlag.Sign;
+        if (result == 0) output.Flags |= (byte)ALUFlag.Zero;
+        if (EvenParity((byte)result)) output.Flags |= (byte)ALUFlag.Parity;
         
         output.Result = (byte)result;
         return output;

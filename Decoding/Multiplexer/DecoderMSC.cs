@@ -13,6 +13,7 @@ public partial class DecoderMultiplexer : DecoderModel
             AddressDriver = Register.HL_L,
             DataDriver = Register.TMP,
             DataLatcher = EncodedRegisters[BB_XXX_BBB(opcode)],
+            SideEffect = SideEffect.NONE,
         };
         
         decoded.Cycles.Add(MachineCycle.RAM_READ_IMM);

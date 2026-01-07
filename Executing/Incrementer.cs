@@ -20,9 +20,9 @@ public partial class DataPath
         
         // CARRY FLAG CONTROLS
         if (signals.SideEffect == SideEffect.STC)
-            FLAGS |= (byte)ALUFlags.Carry;
+            FLAGS |= (byte)ALUFlag.Carry;
         if (signals.SideEffect == SideEffect.CMC)
-            FLAGS ^= (byte)ALUFlags.Carry;
+            FLAGS ^= (byte)ALUFlag.Carry;
     }
 
     private static void Increment(RegisterObject low, RegisterObject high)

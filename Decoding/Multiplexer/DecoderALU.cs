@@ -53,7 +53,7 @@ public partial class DecoderMultiplexer
             Opcode = ALU_00.ElementAt((byte)(BB_BBB_XXX(opcode) - 4)).Key,
             A = Register.TMP, // DESTINATION, IT GOES TO REGISTER
             B = Register.NONE, // IT'S GONNA BE 1
-            FlagMask = 1,
+            FlagMask = FlagMask.SZAP,
         }
     };
 
@@ -67,8 +67,25 @@ public partial class DecoderMultiplexer
                 Opcode = ALUOpcode.DAD,
                 A = EncodedRegisterPairs[GetRegisterPair(opcode) - 4][0],
                 B = EncodedRegisterPairs[GetRegisterPair(opcode) - 4][1],
-                FlagMask = 2
+                FlagMask = FlagMask.C
             }
+        };
+        decoded.Cycles.Add(MachineCycle.ALU_EXECUTE);
+        return decoded;
+    }
+
+    protected Decoded ROTATE(byte opcode)
+    {
+        Decoded decoded = new()
+        {
+            AluOperation = new ALUOperation
+            {
+                Operation = Operation.ROT,
+                Opcode = EncodedRotators[BB_BXX_BBB(opcode)],
+                A = Register.A,
+                FlagMask = FlagMask.C,
+            },
+            DataLatcher = Register.A,
         };
         decoded.Cycles.Add(MachineCycle.ALU_EXECUTE);
         return decoded;

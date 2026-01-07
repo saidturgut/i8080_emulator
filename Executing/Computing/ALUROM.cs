@@ -3,12 +3,17 @@ using Signaling;
 
 public static class ALUROM
 {
-    public static readonly ALUFlags[] FlagMasks =
-    [
-        ALUFlags.Sign | ALUFlags.Zero | ALUFlags.AuxCarry | ALUFlags.Parity | ALUFlags.Carry, // ALL
-        ALUFlags.Sign | ALUFlags.Zero | ALUFlags.AuxCarry | ALUFlags.Parity, // NO CARRY
-        ALUFlags.Carry, // ONLY CARRY
-    ];
+    public static readonly Dictionary<FlagMask, ALUFlag> FlagMasks = new()
+    {
+        { FlagMask.ALL, ALUFlag.Sign | ALUFlag.Zero | ALUFlag.AuxCarry | ALUFlag.Parity | ALUFlag.Carry },
+        { FlagMask.SZAP, ALUFlag.Sign | ALUFlag.Zero | ALUFlag.AuxCarry | ALUFlag.Parity },
+        { FlagMask.C, ALUFlag.Carry },
+    };
+}
+
+public enum FlagMask
+{
+    ALL, SZAP, C,
 }
 
 public readonly struct ALUInput(Operation operation, byte a, byte b, bool flagCy, bool carryUser)
@@ -24,10 +29,16 @@ public struct ALUOutput()
 {
     public byte Result = 0;
     public byte Flags = 0x2;
+
+    public ALUOutput(byte result, byte flags) : this()
+    {
+        Result = result;
+        Flags = flags;
+    }
 }
 
 [Flags]
-public enum ALUFlags
+public enum ALUFlag
 {
     Sign = 1 << 7,
     Zero = 1 << 6,
@@ -46,13 +57,14 @@ public struct ALUOperation()
     public Register A = 0;
     public Register B = 0;
     public bool UseCarry = false;
-    public byte FlagMask = 0;
+    public FlagMask FlagMask = FlagMask.ALL;
 }
 
 public enum Operation
 {
     NONE,
     ADD, SUB, AND, XOR, OR,
+    ROT,
 }
 
 public enum ALUOpcode
@@ -61,4 +73,5 @@ public enum ALUOpcode
     ADD, ADC, SUB, SBB, ANA, XRA, ORA, CMP,
     INR, DCR, INX, DCX,
     DAD,
+    RLC, RAL, RRC, RAR,
 }

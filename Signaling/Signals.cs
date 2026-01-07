@@ -24,5 +24,5 @@ public enum SideEffect
     
     WZ_INC,
     
-    STC, CMC,
+    STC, CMC, CMA,
 }

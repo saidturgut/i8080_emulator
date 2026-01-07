@@ -6,9 +6,14 @@ public partial class ControlUnitROM
 {
     private static SignalSet STC() => new () { SideEffect = SideEffect.STC };
     private static SignalSet CMC() => new () { SideEffect = SideEffect.CMC };
+    private static SignalSet CMA() => new()
+    {
+        DataDriver = Register.A,
+        SideEffect = SideEffect.CMA,
+        DataLatcher = Register.A,
+    };
     private static SignalSet INX_DCX() => new () { SideEffect = decoded.SideEffect };
-    
-    
+
     // *** LHLD / SHLD READ / WRITE AND EXECUTE *** //
     private static SignalSet RAM_READ_H() => new ()
     {

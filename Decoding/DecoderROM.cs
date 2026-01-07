@@ -14,6 +14,7 @@ public class DecoderModel
             
             { 0x37, MachineCycle.STC },
             { 0x3F, MachineCycle.CMC },
+            { 0x2F, MachineCycle.CMA },
         };
 
     protected static readonly Dictionary<ALUOpcode, Operation> ALU_10 = new()
@@ -72,26 +73,27 @@ public class DecoderModel
         SideEffect.HL_DCR, // 10 + 4
         SideEffect.SP_DCR, // 11 + 4
     };
-    
-    protected static byte BB_XXX_BBB(byte opcode)
+
+    protected static readonly ALUOpcode[] EncodedRotators =
     {
-        return (byte)((opcode & 0b00_111_000) >> 3);
-    }
+        ALUOpcode.RLC, ALUOpcode.RRC, ALUOpcode.RAL, ALUOpcode.RAR,
+    };
+
+    protected static byte BB_XXX_BBB(byte opcode) 
+        => (byte)((opcode & 0b00_111_000) >> 3);
 
     protected static byte BB_BBB_XXX(byte opcode)
-    {
-        return (byte)(opcode & 0b00_000_111);
-    }
-    
+        => (byte)(opcode & 0b00_000_111);
+
     protected static byte BB_BBX_BBB(byte opcode)
-    {
-        return (byte)((opcode & 0b00_001_000) >> 3);
-    }
-    
+        => (byte)((opcode & 0b00_001_000) >> 3);
+
+
     protected static byte BB_XXB_BBB(byte opcode)
-    {
-        return (byte)((opcode & 0b00_110_000) >> 4);
-    }
+        => (byte)((opcode & 0b00_110_000) >> 4);
+    
+    protected static byte BB_BXX_BBB(byte opcode)
+        => (byte)((opcode & 0b00_011_000) >> 3);
     
     protected static int GetRegisterPair(byte opcode) =>
         (((opcode & 0x30) >> 4) + ((opcode & 0x8) >> 3) * 4);

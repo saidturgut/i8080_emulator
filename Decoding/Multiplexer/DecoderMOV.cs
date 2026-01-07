@@ -13,6 +13,7 @@ public partial class DecoderMultiplexer
             AddressDriver = Register.HL_L,
             DataDriver = EncodedRegisters[BB_BBB_XXX(opcode)],
             DataLatcher = EncodedRegisters[BB_XXX_BBB(opcode)],
+            SideEffect = SideEffect.NONE,
         };
 
         if (decoded.DataLatcher == Register.RAM)

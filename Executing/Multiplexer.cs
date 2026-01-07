@@ -13,7 +13,11 @@ public partial class DataPath
         if (signals.DataDriver == Register.RAM)
             RAM.Read(ABUS_H, ABUS_L, DBUS);
         else
-            DBUS.Set(Registers[signals.DataDriver].Get());
+        {
+            byte value = Registers[signals.DataDriver].Get();
+            DBUS.Set(signals.SideEffect != SideEffect.CMA ? 
+                value : (byte)~value);
+        }
     }
     
     public void MultiplexerLatch()
