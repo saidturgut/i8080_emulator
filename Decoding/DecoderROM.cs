@@ -6,8 +6,7 @@ using Signaling;
 
 public class DecoderModel
 {
-    protected static readonly Dictionary<byte, MachineCycle> FixedOpcodes
-        = new ()
+    protected static readonly Dictionary<byte, MachineCycle> FixedOpcodes = new ()
         {
             { 0x00, MachineCycle.EMPTY }, // NOP
             { 0x76, MachineCycle.EMPTY }, // HLT
@@ -19,7 +18,6 @@ public class DecoderModel
 
     protected static readonly Dictionary<ALUOpcode, Operation> ALU_10 = new()
     {
-        // 10 FAMILY
         { ALUOpcode.ADD, Operation.ADD }, // 000
         { ALUOpcode.ADC, Operation.ADD }, // 001
         { ALUOpcode.SUB, Operation.SUB }, // 010
@@ -32,7 +30,6 @@ public class DecoderModel
     
     protected static readonly Dictionary<ALUOpcode, Operation> ALU_00 = new()
     {
-        // 00 FAMILY
         { ALUOpcode.INR, Operation.ADD }, // 100
         { ALUOpcode.DCR, Operation.SUB }, // 101
     };
@@ -64,40 +61,34 @@ public class DecoderModel
 
     protected static readonly SideEffect[] IncrementOpcodes =
     {
-        SideEffect.BC_INC, // 00
-        SideEffect.DE_INC, // 01
-        SideEffect.HL_INC, // 10
-        SideEffect.SP_INC, // 11
-        SideEffect.BC_DCR, // 00 + 4
-        SideEffect.DE_DCR, // 01 + 4
-        SideEffect.HL_DCR, // 10 + 4
-        SideEffect.SP_DCR, // 11 + 4
+        SideEffect.BC_INC, SideEffect.DE_INC, 
+        SideEffect.HL_INC, SideEffect.SP_INC,
+        SideEffect.BC_DCR, SideEffect.DE_DCR,
+        SideEffect.HL_DCR, SideEffect.SP_DCR, 
     };
 
     protected static readonly ALUOpcode[] EncodedRotators =
     {
-        ALUOpcode.RLC, ALUOpcode.RRC, ALUOpcode.RAL, ALUOpcode.RAR,
+        ALUOpcode.RLC, ALUOpcode.RRC, ALUOpcode.RAL, ALUOpcode.RAR, ALUOpcode.DAA,
     };
 
     protected static byte BB_XXX_BBB(byte opcode) 
         => (byte)((opcode & 0b00_111_000) >> 3);
-
     protected static byte BB_BBB_XXX(byte opcode)
         => (byte)(opcode & 0b00_000_111);
-
     protected static byte BB_BBX_BBB(byte opcode)
         => (byte)((opcode & 0b00_001_000) >> 3);
-
-
     protected static byte BB_XXB_BBB(byte opcode)
         => (byte)((opcode & 0b00_110_000) >> 4);
-    
     protected static byte BB_BXX_BBB(byte opcode)
         => (byte)((opcode & 0b00_011_000) >> 3);
-    
+    protected static byte BBBB_XXXX(byte opcode)
+        => (byte)(opcode & 0b0000_1111);
+    protected static byte XXXX_BBBB(byte opcode)
+        => (byte)((opcode & 0b1111_0000) >> 4);
+
     protected static int GetRegisterPair(byte opcode) =>
         (((opcode & 0x30) >> 4) + ((opcode & 0x8) >> 3) * 4);
-    
     protected static int GetRegisterPairNormal(byte opcode) => 
         (opcode & 0x30) >> 4;
 }

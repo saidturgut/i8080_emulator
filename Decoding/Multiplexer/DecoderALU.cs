@@ -5,15 +5,30 @@ using Executing;
 using Signaling;
 
 public partial class DecoderMultiplexer
-{
+{    
     // 10
-    protected Decoded FamilyALU(byte opcode, bool isNative)
+    protected Decoded FamilyALU(byte opcode, bool isNative, bool imm)
     {
-        Decoded decoded = isNative ? ALU(opcode) : INR_DCR(opcode);
-
-        decoded.Cycles.Add(decoded.DataDriver == Register.RAM ? 
-            MachineCycle.RAM_READ_TMP : 
-            MachineCycle.TMP_LATCH);
+        Decoded decoded;
+        if (isNative)
+        {
+            var resolved = ResolveOpcode(opcode, imm);
+            
+            Console.WriteLine(resolved.driver.ToString() + resolved.operation.ToString()  + resolved.aluOpcode.ToString() );
+            decoded = ALU(resolved.driver, resolved.operation, resolved.aluOpcode);
+        }
+        else
+            decoded = INR_DCR(opcode);
+        
+        if (imm)
+            decoded.Cycles.Add(MachineCycle.RAM_READ_IMM);
+        else
+        {
+            decoded.Cycles.Add(decoded.DataDriver == Register.RAM ? 
+                MachineCycle.RAM_READ_TMP : 
+                MachineCycle.TMP_LATCH);
+        }
+        
         decoded.Cycles.Add(MachineCycle.ALU_EXECUTE);
 
         var nullable = decoded.AluOperation!.Value;
@@ -26,22 +41,37 @@ public partial class DecoderMultiplexer
         decoded.AluOperation = nullable;
         return decoded;
     }
+    
+    (Register driver, Operation operation, ALUOpcode aluOpcode) ResolveOpcode(byte opcode, bool imm)
+    {
+        if (!imm)
+        {
+            return (EncodedRegisters[BB_BBB_XXX(opcode)], ALU_10.ElementAt(BB_XXX_BBB(opcode)).Value, 
+                ALU_10.ElementAt(BB_XXX_BBB(opcode)).Key);
+        }
+        else
+        {
+            byte index = (byte)((opcode >> 3) & 0b00_000_111);
+            return (Register.NONE, ALU_10.ElementAt(index).Value,
+                ALU_10.ElementAt(index).Key);
+        }
+    }
 
-    private Decoded ALU(byte opcode) => new()
+    private Decoded ALU(Register driver, Operation operation, ALUOpcode aluOpcode) => new()
     {
         AddressDriver = Register.HL_L,
-        DataDriver = EncodedRegisters[BB_BBB_XXX(opcode)], // OPERAND
+        DataDriver = driver, // OPERAND
         DataLatcher = Register.A, // DESTINATION
         AluOperation = new ALUOperation
         {
-            Operation = ALU_10.ElementAt(BB_XXX_BBB(opcode)).Value,
-            Opcode = ALU_10.ElementAt(BB_XXX_BBB(opcode)).Key,
+            Operation = operation,
+            Opcode = aluOpcode,
             A = Register.A, // DESTINATION
             B = Register.TMP, // OPERAND GOES TO TMP
             FlagMask = 0,
         }
     };
-
+    
     private Decoded INR_DCR(byte opcode) => new()
     {        
         AddressDriver = Register.HL_L,
@@ -56,38 +86,4 @@ public partial class DecoderMultiplexer
             FlagMask = FlagMask.SZAP,
         }
     };
-
-    protected Decoded DAD(byte opcode)
-    {
-        Decoded decoded = new()
-        {
-            AluOperation = new ALUOperation
-            {
-                Operation = Operation.ADD,
-                Opcode = ALUOpcode.DAD,
-                A = EncodedRegisterPairs[GetRegisterPair(opcode) - 4][0],
-                B = EncodedRegisterPairs[GetRegisterPair(opcode) - 4][1],
-                FlagMask = FlagMask.C
-            }
-        };
-        decoded.Cycles.Add(MachineCycle.ALU_EXECUTE);
-        return decoded;
-    }
-
-    protected Decoded ROTATE(byte opcode)
-    {
-        Decoded decoded = new()
-        {
-            AluOperation = new ALUOperation
-            {
-                Operation = Operation.ROT,
-                Opcode = EncodedRotators[BB_BXX_BBB(opcode)],
-                A = Register.A,
-                FlagMask = FlagMask.C,
-            },
-            DataLatcher = Register.A,
-        };
-        decoded.Cycles.Add(MachineCycle.ALU_EXECUTE);
-        return decoded;
-    }
 }

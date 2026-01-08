@@ -29,7 +29,7 @@ public partial class ALU
                 result = input.A + (~input.B & 0xFF) + carry;
                 
                 if ((input.A & 0x0F) - (input.B & 0x0F) - (1 - carry) < 0) output.Flags |= (byte)ALUFlag.AuxCarry;
-                if (result < 0x100) output.Flags |= (byte)ALUFlag.Carry;
+                if (result >= 0x100) output.Flags |= (byte)ALUFlag.Carry;
                 break;
             }
             case Operation.AND:
@@ -50,6 +50,9 @@ public partial class ALU
                 break;
             }
         }
+
+        result = (byte)result;
+        
         if ((result & 0x80) != 0) output.Flags |= (byte)ALUFlag.Sign;
         if (result == 0) output.Flags |= (byte)ALUFlag.Zero;
         if (EvenParity((byte)result)) output.Flags |= (byte)ALUFlag.Parity;

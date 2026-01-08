@@ -9,10 +9,9 @@ public class RAM
     
     private readonly byte[] ROM =
     [
-        0x3E, 0xA5,
-        0x07,0x07,0x07,0x07,
-        0x07,0x07,0x07,0x07,
-        0x76  
+        0x3E, 0x03,   // MVI A,03
+        0xFE, 0x05,   // CPI 05
+        0x76
     ];
     
     public void Init()
@@ -21,15 +20,15 @@ public class RAM
             Memory[i] = ROM[i];
     }
     
-    public void Read(Bus aBus_H, Bus aBus_L, Bus dBus)
+    public void Read(TriStateBus aBusH, TriStateBus aBusL, TriStateBus dBus)
     {
-        dBus.Set(Memory[Merge(aBus_H.Get(), aBus_L.Get())]);
+        dBus.Set(Memory[Merge(aBusH.Get(), aBusL.Get())]);
     }
 
-    public void Write(Bus aBus_H, Bus aBus_L, Bus dBus)
+    public void Write(TriStateBus aBusH, TriStateBus aBusL, TriStateBus dBus)
     {
-        Memory[Merge(aBus_H.Get(), aBus_L.Get())] = dBus.Get();
-        MemoryDump[Merge(aBus_H.Get(), aBus_L.Get())] = Memory[Merge(aBus_H.Get(), aBus_L.Get())];
+        Memory[Merge(aBusH.Get(), aBusL.Get())] = dBus.Get();
+        MemoryDump[Merge(aBusH.Get(), aBusL.Get())] = Memory[Merge(aBusH.Get(), aBusL.Get())];
     }
 
     private ushort Merge(byte high, byte low)

@@ -7,8 +7,8 @@ using Signaling;
 public struct Decoded()
 {
     public Register AddressDriver = Register.NONE;
-    public Register DataDriver = Register.NONE;// CMD B, X
-    public Register DataLatcher = Register.NONE; // CMD X, B
+    public Register DataDriver = Register.NONE;
+    public Register DataLatcher = Register.NONE;
     public SideEffect SideEffect = SideEffect.NONE;
 
     public Register[] RegisterPairs = [];

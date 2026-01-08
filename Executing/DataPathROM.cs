@@ -7,13 +7,13 @@ public class DataPathROM
     {
         { Register.PC_L, new RegisterObject() }, { Register.PC_H, new RegisterObject() }, // PROGRAM COUNTER
         { Register.IR, new RegisterObject() }, // INSTRUCTION REGISTER
-        { Register.SP_L, new RegisterObject() }, { Register.SP_H, new RegisterObject() }, // STACK POINTER
+        { Register.TMP, new RegisterObject() }, // TEMP DATA REGISTER
         { Register.A, new RegisterObject() }, // ACCUMULATOR
         { Register.B, new RegisterObject() }, { Register.C, new RegisterObject() }, // B & C PAIR
         { Register.D, new RegisterObject() }, { Register.E, new RegisterObject() }, // D & E PAIR
-        { Register.TMP, new RegisterObject() }, // TEMP REGISTER
-        { Register.WZ_L, new RegisterObject() }, { Register.WZ_H, new RegisterObject() }, // TEMP ADDRESS LATCH
-        { Register.HL_L, new RegisterObject() }, { Register.HL_H, new RegisterObject() }, // ABS ADDRESS LATCH
+        { Register.HL_L, new RegisterObject() }, { Register.HL_H, new RegisterObject() }, // ABS ADDRESS REGISTER
+        { Register.SP_L, new RegisterObject() }, { Register.SP_H, new RegisterObject() }, // STACK POINTER
+        { Register.WZ_L, new RegisterObject() }, { Register.WZ_H, new RegisterObject() }, // TEMP ADDRESS REGISTER
     };
     
     protected Dictionary<Register, RegisterObject[]> RegisterPairs = new();
@@ -45,25 +45,21 @@ public class DataPathROM
 
 public class RegisterObject
 {
-    private byte Value;
+    private byte value;
 
-    public void Set(byte input)
-    {
-        Value = input;
-    }
-
-    public byte Get() => Value;
+    public void Set(byte input) 
+        => value = input;
+   
+    public byte Get() => value;
 };
 
 public enum Register
 {
     NONE,
     PC_L, PC_H, 
-    IR, 
-    RAM,
+    IR, RAM, TMP,
     SP_L, SP_H, 
     A, B, C, D, E, 
-    TMP,
     HL_L, HL_H, 
     WZ_H, WZ_L,
 }

@@ -1,6 +1,6 @@
 namespace i8080_emulator.Executing;
 
-public class Bus
+public class TriStateBus
 {
     private byte value;
     private bool driven;
@@ -17,12 +17,9 @@ public class Bus
             throw new Exception("BUS CONTENTION");
         
         driven = true;
-        
         value = input;
     }
 
-    public byte Get()
-    {
-        return value;
-    }
+    public byte Get() => value;
+
 }

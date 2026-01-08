@@ -1,3 +1,5 @@
+using i8080_emulator.Decoding;
+
 namespace i8080_emulator.Executing.Computing;
 
 public partial class ALU
@@ -19,5 +21,29 @@ public partial class ALU
                 return new ALUOutput((byte)((A >> 1) | (CY << 7)), bit0);
         }
         return new ALUOutput();
+    }
+
+    public ALUOutput BCDFixer(byte A, bool CY, bool AC)
+    { // DAA
+        byte fixer = 0;
+        ALUFlag mask = ALUFlag.Sign | ALUFlag.Zero | ALUFlag.Parity;
+
+        if ((A & 0x0F) > 9 || AC) // LOW
+        {
+            fixer |= 0x06;
+            mask |= ALUFlag.AuxCarry;
+        }
+
+        if (A > 0x99 || CY) // HIGH
+        {
+            fixer |= 0x60;
+            mask |= ALUFlag.Carry;
+        }
+        
+        ALUOutput output = Compute(new ALUInput
+            (Operation.ADD, A,  fixer, false, false));
+        
+        output.FlagMask = mask;
+        return output;
     }
 }

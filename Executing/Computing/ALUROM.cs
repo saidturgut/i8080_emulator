@@ -29,6 +29,7 @@ public struct ALUOutput()
 {
     public byte Result = 0;
     public byte Flags = 0x2;
+    public ALUFlag FlagMask;
 
     public ALUOutput(byte result, byte flags) : this()
     {
@@ -71,7 +72,8 @@ public enum ALUOpcode
 {
     NONE,
     ADD, ADC, SUB, SBB, ANA, XRA, ORA, CMP,
-    INR, DCR, INX, DCX,
+    INR, DCR,
     DAD,
-    RLC, RAL, RRC, RAR,
+    RLC, RAL, RRC, RAR, DAA,
 }
+// 0100 0010

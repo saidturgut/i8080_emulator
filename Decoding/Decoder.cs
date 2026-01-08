@@ -15,9 +15,9 @@ public class Decoder : DecoderMultiplexer
             case 0b00:
                 switch (BB_BBB_XXX(opcode))
                 {
-                    case 0b111: return ROTATE(opcode);
+                    case 0b111: return ROT(opcode);
                     case 0b101:
-                    case 0b100: return FamilyALU(opcode, false);
+                    case 0b100: return FamilyALU(opcode, false, false);
                     case 0b011: return INX_DCX(opcode);
                     case 0b010:
                     {
@@ -30,20 +30,22 @@ public class Decoder : DecoderMultiplexer
                     }
                     case 0b001:
                     {
-                        if(BB_BBX_BBB(opcode) == 1)
-                            return DAD(opcode);
-                        else
-                            return LXI(opcode);
+                        if(BB_BBX_BBB(opcode) == 1) return DAD(opcode);
+                        else return LXI(opcode);
                     }
                 }
-                
                 return FamilyMSC(opcode);
-            case 0b01:
-                return FamilyMOV(opcode);
-            case 0b10:
-                return FamilyALU(opcode, true);
+            case 0b01: return FamilyMOV(opcode);
+            case 0b10: return FamilyALU(opcode, true, false);
             case 0b11:
-                throw new Exception("INVALID OPCODE");
+            {
+                switch (BBBB_XXXX(opcode))
+                {
+                    case 0b0110:
+                    case 0b1110: return FamilyALU(opcode, true, true);
+                }
+                break;
+            }
         }
 
         return new Decoded();

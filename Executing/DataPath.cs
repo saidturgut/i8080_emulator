@@ -8,9 +8,9 @@ public partial class DataPath : DataPathROM
     private readonly RAM RAM = new ();
     private readonly ALU ALU = new ();
     
-    private readonly Bus DBUS = new (); // DATA BUS 
-    private readonly Bus ABUS_H = new (); 
-    private readonly Bus ABUS_L = new ();
+    private readonly TriStateBus DBUS = new (); // DATA BUS 
+    private readonly TriStateBus ABUS_H = new (); 
+    private readonly TriStateBus ABUS_L = new ();
     
     private byte FLAGS;
     
