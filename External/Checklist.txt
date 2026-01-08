@@ -1,4 +1,7 @@
+PCHL      11101001          -       Jump to address in H:L
 XCHG      11101011          -       Exchange DE and HL content
+SPHL      11111001          -       Set SP to content of H:L
+
 JMP a     11000011 lb hb    -       Unconditional jump
 Jccc a    11CCC010 lb hb    -       Conditional jump
 CALL a    11001101 lb hb    -       Unconditional subroutine call
@@ -6,11 +9,9 @@ Cccc a    11CCC100 lb hb    -       Conditional subroutine call
 RET       11001001          -       Unconditional return from subroutine
 Rccc      11CCC000          -       Conditional return from subroutine
 RST n     11NNN111          -       Restart (Call n*8)
-PCHL      11101001          -       Jump to address in H:L
 PUSH RP   11RP0101 *2       -       Push register pair on the stack
 POP RP    11RP0001 *2       *2      Pop  register pair from the stack
 XTHL      11100011          -       Swap H:L with top word on stack
-SPHL      11111001          -       Set SP to content of H:L
 IN p      11011011 pa       -       Read input port into A
 OUT p     11010011 pa       -       Write A to output port
 EI        11111011          -       Enable interrupts

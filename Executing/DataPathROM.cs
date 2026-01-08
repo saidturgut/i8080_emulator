@@ -3,20 +3,19 @@ using Signaling;
 
 public class DataPathROM
 {
-    protected readonly Dictionary<Register, RegisterObject> Registers = new()
+    protected readonly Dictionary<Register, ClockedRegister> Registers = new()
     {
-        { Register.PC_L, new RegisterObject() }, { Register.PC_H, new RegisterObject() }, // PROGRAM COUNTER
-        { Register.IR, new RegisterObject() }, // INSTRUCTION REGISTER
-        { Register.TMP, new RegisterObject() }, // TEMP DATA REGISTER
-        { Register.A, new RegisterObject() }, // ACCUMULATOR
-        { Register.B, new RegisterObject() }, { Register.C, new RegisterObject() }, // B & C PAIR
-        { Register.D, new RegisterObject() }, { Register.E, new RegisterObject() }, // D & E PAIR
-        { Register.HL_L, new RegisterObject() }, { Register.HL_H, new RegisterObject() }, // ABS ADDRESS REGISTER
-        { Register.SP_L, new RegisterObject() }, { Register.SP_H, new RegisterObject() }, // STACK POINTER
-        { Register.WZ_L, new RegisterObject() }, { Register.WZ_H, new RegisterObject() }, // TEMP ADDRESS REGISTER
+        { Register.PC_L, new ClockedRegister(Register.PC_L) }, { Register.PC_H, new ClockedRegister(Register.PC_H) }, // PROGRAM COUNTER
+        { Register.TMP, new ClockedRegister(Register.TMP) }, // TEMP DATA REGISTER
+        { Register.A, new ClockedRegister(Register.A) }, // ACCUMULATOR
+        { Register.B, new ClockedRegister(Register.B) }, { Register.C, new ClockedRegister(Register.C) }, // B & C PAIR
+        { Register.D, new ClockedRegister(Register.D) }, { Register.E, new ClockedRegister(Register.E) }, // D & E PAIR
+        { Register.HL_L, new ClockedRegister(Register.HL_L) }, { Register.HL_H, new ClockedRegister(Register.HL_H) }, // ABS ADDRESS REGISTER
+        { Register.SP_L, new ClockedRegister(Register.SP_L) }, { Register.SP_H, new ClockedRegister(Register.SP_H) }, // STACK POINTER
+        { Register.WZ_L, new ClockedRegister(Register.WZ_L) }, { Register.WZ_H, new ClockedRegister(Register.WZ_H) }, // TEMP ADDRESS REGISTER
     };
     
-    protected Dictionary<Register, RegisterObject[]> RegisterPairs = new();
+    protected Dictionary<Register, ClockedRegister[]> RegisterPairs = new();
     protected Dictionary<SideEffect, IncrementPair> PairIncrements = new();
     
     public virtual void Init()
@@ -43,29 +42,8 @@ public class DataPathROM
     }
 }
 
-public class RegisterObject
-{
-    private byte value;
-
-    public void Set(byte input) 
-        => value = input;
-   
-    public byte Get() => value;
-};
-
-public enum Register
-{
-    NONE,
-    PC_L, PC_H, 
-    IR, RAM, TMP,
-    SP_L, SP_H, 
-    A, B, C, D, E, 
-    HL_L, HL_H, 
-    WZ_H, WZ_L,
-}
-
 public class IncrementPair
 {
-    public RegisterObject[] Pair = [];
+    public ClockedRegister[] Pair = [];
     public bool Decrement = false;
 }

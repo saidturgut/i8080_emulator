@@ -12,21 +12,14 @@ public partial class DataPath : DataPathROM
     private readonly TriStateBus ABUS_H = new (); 
     private readonly TriStateBus ABUS_L = new ();
     
-    private byte FLAGS;
+    private PipelineRegister IR = new ();
+    private ClockedRegister FLAGS = new (Register.FLAGS);
     
     private SignalSet signals = new ();
     
     public override void Init()
     {
         base.Init();
-        /*
-        Registers[R.B].Set(0);
-        Registers[R.C].Set(0xFF);
-        Registers[R.D].Set(0xFF);
-        Registers[R.E].Set(0xFF);
-        Registers[R.H].Set(0x12);
-        Registers[R.L].Set(0xFE);
-        */
         RAM.Init();
     }
     
@@ -37,15 +30,21 @@ public partial class DataPath : DataPathROM
         ABUS_L.Clear();
     }
 
-    public void Set(SignalSet input)
-    {
+    public void Set(SignalSet input) =>      
         signals = input;
+
+    public void Commit()
+    {
+        foreach (ClockedRegister register in Registers.Values)
+            register.Commit();
+        FLAGS.Commit();
     }
 
     public void Debug()
     {
+        byte flags = FLAGS.Get();
         Console.WriteLine($"PROGRAM COUNTER : {(ushort)((Registers[Register.PC_H].Get() << 8) + Registers[Register.PC_L].Get())}");
-        Console.WriteLine($"IR : {Registers[Register.IR].Get()}");
+        Console.WriteLine($"IR : {IR.Get()}");
         Console.WriteLine($"TMP : {Registers[Register.TMP].Get()}");
         Console.WriteLine($"B : {Registers[Register.B].Get()}");
         Console.WriteLine($"C : {Registers[Register.C].Get()}");
@@ -57,8 +56,7 @@ public partial class DataPath : DataPathROM
         Console.WriteLine($"HL : {(ushort)((Registers[Register.HL_H].Get() << 8) + Registers[Register.HL_L].Get())}");
         Console.WriteLine($"SP : {(ushort)((Registers[Register.SP_H].Get() << 8) + Registers[Register.SP_L].Get())}");
         Console.WriteLine($"WZ : {(ushort)((Registers[Register.WZ_H].Get() << 8) + Registers[Register.WZ_L].Get())}");
-        Console.WriteLine(
-            $"FLAGS : S={(FLAGS >> 7) & 1} Z={(FLAGS >> 6) & 1} AC={(FLAGS >> 4) & 1} P={(FLAGS >> 2) & 1} CY={(FLAGS >> 0) & 1}");
+        Console.WriteLine($"FLAGS : S={(flags >> 7) & 1} Z={(flags >> 6) & 1} AC={(flags >> 4) & 1} P={(flags >> 2) & 1} CY={(flags >> 0) & 1}");
     }
 
     public void MemoryDump()

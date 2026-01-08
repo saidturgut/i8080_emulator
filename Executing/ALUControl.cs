@@ -10,8 +10,8 @@ public partial class DataPath
             return;
         
         var nullable = signals.AluOperation!.Value;
-        bool CarryFlag = (byte)(FLAGS & (byte)ALUFlag.Carry) != 0;
-        bool AuxCarryFlag = (byte)(FLAGS & (byte)ALUFlag.AuxCarry) != 0;
+        bool CarryFlag = (byte)(FLAGS.Get() & (byte)ALUFlag.Carry) != 0;
+        bool AuxCarryFlag = (byte)(FLAGS.Get() & (byte)ALUFlag.AuxCarry) != 0;
         ALUOutput output;
         
         if (nullable.Opcode == ALUOpcode.DAD) { DAD(nullable); return; }
@@ -68,6 +68,6 @@ public partial class DataPath
     
     private void UpdateFlags(ALUFlag mask, byte newFlags)
     {
-        FLAGS = (byte)((FLAGS & (byte)~mask) | (newFlags & (byte)mask));
+        FLAGS.Set((byte)((FLAGS.Get() & (byte)~mask) | (newFlags & (byte)mask)));
     }
 }

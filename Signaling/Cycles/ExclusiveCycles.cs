@@ -4,6 +4,7 @@ using Executing;
 
 public partial class ControlUnitROM
 {
+    private static SignalSet PCHL() => new() { SideEffect = SideEffect.PCHL };
     private static SignalSet STC() => new () { SideEffect = SideEffect.STC };
     private static SignalSet CMC() => new () { SideEffect = SideEffect.CMC };
     private static SignalSet CMA() => new()
@@ -26,5 +27,19 @@ public partial class ControlUnitROM
         AddressDriver = decoded.AddressDriver,
         DataDriver = Register.HL_H,
         DataLatcher = Register.RAM,
+    };
+
+    // *** SET PCHL / SPHL WITH HL *** //
+    private static SignalSet COPY_HL_LOW() => new ()
+    {
+        DataDriver = Register.HL_L,
+        DataLatcher = decoded.RegisterPairs[0],
+        SideEffect = decoded.SideEffect,
+    };
+    private static SignalSet COPY_HL_HIGH() => new ()
+    {
+        DataDriver = Register.HL_H,
+        DataLatcher = decoded.RegisterPairs[1],
+        SideEffect = decoded.SideEffect,
     };
 }

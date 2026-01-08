@@ -14,7 +14,7 @@ public struct SignalSet()
 public enum SideEffect
 {
     NONE,
-    PC_INC,
+    PC_INC, PCHL,
     
     SP_INC, SP_DCR,
     
@@ -25,4 +25,6 @@ public enum SideEffect
     WZ_INC,
     
     STC, CMC, CMA,
+    
+    SWAP,
 }

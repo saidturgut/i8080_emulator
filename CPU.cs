@@ -23,22 +23,24 @@ public class CPU
 
     private void Tick()
     {
+        DataPath.Commit();
+
         DataPath.Set(
         ControlUnit.Emit());
         
         DataPath.Clear();
-        
+        DataPath.Debug();
+
         DataPath.ControlALU();
         DataPath.AddressBuffer();
         DataPath.MultiplexerDrive();
         
         DataPath.MultiplexerLatch();
         DataPath.Incrementer();
-
-        DataPath.Debug();
         
         ControlUnit.Decode(
         DataPath.GetIR());
+        
         ControlUnit.Advance();
     }
 }

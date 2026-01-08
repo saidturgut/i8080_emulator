@@ -3,7 +3,7 @@ using Signaling;
 
 public partial class DataPath
 {
-    public byte GetIR() => Registers[Register.IR].Get();
+    public byte GetIR() => IR.Get();
     
     public void MultiplexerDrive()
     {        
@@ -24,10 +24,20 @@ public partial class DataPath
     {        
         if(signals.DataLatcher == Register.NONE)
             return;
+
+        if (signals.DataLatcher == Register.IR)
+        {
+            IR.Set(DBUS.Get()); return;
+        }
         
         if (signals.DataLatcher == Register.RAM)
             RAM.Write(ABUS_H, ABUS_L, DBUS);
         else
+        {
+            if (signals.SideEffect == SideEffect.SWAP)
+                Registers[signals.DataDriver].Set(Registers[signals.DataLatcher].Get());
+            
             Registers[signals.DataLatcher].Set(DBUS.Get());
+        }
     }
 }

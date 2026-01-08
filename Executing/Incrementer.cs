@@ -6,7 +6,7 @@ public partial class DataPath
 {
     public void Incrementer()
     {
-        if(signals.SideEffect == SideEffect.NONE)
+        if(signals.SideEffect is SideEffect.NONE or SideEffect.PCHL)
             return;
         
         if (PairIncrements.TryGetValue(signals.SideEffect, out var pair))
@@ -20,22 +20,26 @@ public partial class DataPath
         
         // CARRY FLAG CONTROLS
         if (signals.SideEffect == SideEffect.STC)
-            FLAGS |= (byte)ALUFlag.Carry;
+            FLAGS.Set((byte)(FLAGS.Get() | (byte)ALUFlag.Carry));
         if (signals.SideEffect == SideEffect.CMC)
-            FLAGS ^= (byte)ALUFlag.Carry;
+            FLAGS.Set((byte)(FLAGS.Get() ^ (byte)ALUFlag.Carry));
     }
 
-    private static void Increment(RegisterObject low, RegisterObject high)
+    private static void Increment(ClockedRegister low, ClockedRegister high)
     {
-        low.Set((byte)(low.Get() + 1));
-        if(low.Get() == 0)
+        byte prev = low.Get();
+        low.Set((byte)(prev + 1));
+        
+        if (prev == 0xFF)
             high.Set((byte)(high.Get() + 1));
     }
     
-    private static void Decrement(RegisterObject low, RegisterObject high)
+    private static void Decrement(ClockedRegister low, ClockedRegister high)
     {
-        low.Set((byte)(low.Get() - 1));
-        if(low.Get() == 0xFF)
+        byte prev = low.Get();
+        low.Set((byte)(prev - 1));
+        
+        if (prev == 0x00)
             high.Set((byte)(high.Get() - 1));
     }
 }

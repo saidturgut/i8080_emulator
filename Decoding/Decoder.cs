@@ -39,6 +39,12 @@ public class Decoder : DecoderMultiplexer
             case 0b10: return FamilyALU(opcode, true, false);
             case 0b11:
             {
+                switch (opcode)
+                {
+                    case 0xEB: return COPY_HL(1);// XCHG (HL <-> DE)
+                    case 0xF9: return COPY_HL(3);// SPHL (HL -> SP)
+                }
+                
                 switch (BBBB_XXXX(opcode))
                 {
                     case 0b0110:

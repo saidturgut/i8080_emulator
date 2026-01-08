@@ -9,8 +9,9 @@ public class RAM
     
     private readonly byte[] ROM =
     [
-        0x3E, 0x03,   // MVI A,03
-        0xFE, 0x05,   // CPI 05
+        0x21, 0x34, 0x12,   // LXI H,1234h
+        0x11, 0x78, 0x56,   // LXI D,5678h
+        0xEB,               // XCHG
         0x76
     ];
     

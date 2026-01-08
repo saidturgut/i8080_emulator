@@ -11,6 +11,8 @@ public class DecoderModel
             { 0x00, MachineCycle.EMPTY }, // NOP
             { 0x76, MachineCycle.EMPTY }, // HLT
             
+            { 0xE9, MachineCycle.PCHL },
+
             { 0x37, MachineCycle.STC },
             { 0x3F, MachineCycle.CMC },
             { 0x2F, MachineCycle.CMA },
@@ -57,6 +59,7 @@ public class DecoderModel
         [Register.E, Register.D],
         [Register.HL_L, Register.HL_H],
         [Register.SP_L, Register.SP_H],
+        [Register.PC_L, Register.PC_H],
     };
 
     protected static readonly SideEffect[] IncrementOpcodes =
