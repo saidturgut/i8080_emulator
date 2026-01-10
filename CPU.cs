@@ -25,26 +25,27 @@ public class CPU
 
     private void Tick()
     {
-        DataPath.Commit();
-        DataPath.Debug();
-
+        // COMBINATIONAL PHASE
+        DataPath.Clear();
         DataPath.Set(
         ControlUnit.Emit());
-        
-        if(DataPath.HALT) return;
-        
-        DataPath.Clear();
 
-        DataPath.ControlALU();
+        DataPath.ALUControl();
+        
+        DataPath.PreIncrement();
         DataPath.AddressBuffer();
         DataPath.MultiplexerDrive();
         
         DataPath.MultiplexerLatch();
-        DataPath.Incrementer();
+        DataPath.Increment();
         
         ControlUnit.Decode(
-        DataPath.GetIR());
+        DataPath.GetValues());
         
-        ControlUnit.Advance();
+        // FALLING EDGE
+        DataPath.Commit();
+        DataPath.Debug();
+
+        ControlUnit.Advance(DataPath.HALT);
     }
 }

@@ -8,7 +8,6 @@ public class DecoderModel
 {
     protected static readonly Dictionary<byte, FixedOpcode> FixedMicroCycles = new ()
         {
-            { 0x00, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
             { 0x76, new FixedOpcode(MachineCycle.HALT, SideEffect.HALT) }, // HLT
             
             { 0xE9, new FixedOpcode(MachineCycle.MICRO_CYCLE, SideEffect.PCHL) },
@@ -16,6 +15,23 @@ public class DecoderModel
             { 0x37, new FixedOpcode(MachineCycle.MICRO_CYCLE, SideEffect.STC) },
             { 0x3F, new FixedOpcode(MachineCycle.MICRO_CYCLE, SideEffect.CMC) },
             { 0x2F, new FixedOpcode(MachineCycle.CMA, SideEffect.CMA) },
+            
+            { 0x00, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
+            { 0x40, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
+            { 0x49, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
+            { 0x52, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
+            { 0x5B, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
+            { 0x64, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
+            { 0x6D, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
+            { 0x7F, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
+            
+            { 0x08, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
+            { 0x10, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
+            { 0x18, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
+            { 0x20, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
+            { 0x28, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
+            { 0x30, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
+            { 0x38, new FixedOpcode(MachineCycle.EMPTY, SideEffect.NONE) }, // NOP
         };
     
     protected static readonly Dictionary<ALUOpcode, Operation> ALU_10 = new()

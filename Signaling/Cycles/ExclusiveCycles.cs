@@ -10,7 +10,8 @@ public partial class ControlUnitROM
         SideEffect = SideEffect.CMA,
         DataLatcher = Register.A,
     };
-    private static SignalSet INX_DCX() => new () { SideEffect = decoded.SideEffect };
+    private static SignalSet INX_DCX() => new()
+        { SideEffect = decoded.SideEffect };
 
     // *** LHLD / SHLD READ / WRITE AND EXECUTE *** //
     private static SignalSet RAM_READ_H() => new ()
@@ -26,7 +27,7 @@ public partial class ControlUnitROM
         DataLatcher = Register.RAM,
     };
 
-    // *** FOR CALL / XCHG / SPHL / PCHL *** //
+    // *** XCHG / SPHL *** //
     private static SignalSet COPY_RP_LOW() => new ()
     {
         DataDriver = decoded.DrivePairs[0],
@@ -40,35 +41,58 @@ public partial class ControlUnitROM
         SideEffect = decoded.SideEffect,
     };
     
-    // *** CALL *** //
-    private static SignalSet CALL_LOW() => new()
+    // *** PUSH, CALL *** //
+    private static SignalSet PUSH_HIGH() => new()
     {
         AddressDriver = Register.SP_L,
-        DataDriver = Register.PC_L,
+        DataDriver = decoded.DrivePairs[1],
         DataLatcher = Register.RAM,
         SideEffect = SideEffect.SP_NXT,
     };
-    private static SignalSet CALL_HIGH() => new()
+    private static SignalSet PUSH_LOW() => new()
     {
         AddressDriver = Register.SP_L,
-        DataDriver = Register.PC_H,
+        DataDriver = decoded.DrivePairs[0],
         DataLatcher = Register.RAM,
         SideEffect = SideEffect.SP_NXT,
     };
     
-    // *** RETURN *** //
-    private static SignalSet RET_LOW() => new()
+    // *** POP, RET *** //
+    private static SignalSet POP_LOW() => new()
     {
         AddressDriver = Register.SP_L,
         DataDriver = Register.RAM,
-        DataLatcher = Register.WZ_L,
+        DataLatcher = decoded.LatchPairs[0],
         SideEffect = SideEffect.SP_INC,
     };
-    private static SignalSet RET_HIGH() => new()
+    private static SignalSet POP_HIGH() => new()
     {
         AddressDriver = Register.SP_L,
         DataDriver = Register.RAM,
-        DataLatcher = Register.WZ_H,
+        DataLatcher = decoded.LatchPairs[1],
         SideEffect = SideEffect.SP_INC,
+    };
+    
+    // *** XTHL *** //
+    private static SignalSet RAM_READ_XTHL() => new ()
+    {
+        AddressDriver = Register.SP_L,
+        DataDriver = Register.RAM,
+        DataLatcher = Register.TMP,
+        SideEffect = SideEffect.XTHL_SP,
+    };
+    private static SignalSet XTHL_HIGH() => new ()
+    {
+        AddressDriver = Register.SP_L,
+        DataDriver = Register.HL_H,
+        DataLatcher = Register.RAM,
+        SideEffect = SideEffect.XTHL_SP,
+    };
+    private static SignalSet XTHL_LOW() => new ()
+    {
+        AddressDriver = Register.SP_L,
+        DataDriver = Register.HL_L,
+        DataLatcher = Register.RAM,
+        SideEffect = SideEffect.XTHL,
     };
 }

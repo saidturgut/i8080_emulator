@@ -36,11 +36,15 @@ public partial class ControlUnitROM
         { MachineCycle.COPY_RP_LOW, COPY_RP_LOW },
         { MachineCycle.COPY_RP_HIGH, COPY_RP_HIGH },
         
-        { MachineCycle.CALL_LOW, CALL_LOW },
-        { MachineCycle.CALL_HIGH, CALL_HIGH },
+        { MachineCycle.RAM_READ_XTHL, RAM_READ_XTHL },
+        { MachineCycle.XTHL_HIGH, XTHL_HIGH },
+        { MachineCycle.XTHL_LOW, XTHL_LOW },
         
-        { MachineCycle.RET_LOW, RET_LOW },
-        { MachineCycle.RET_HIGH, RET_HIGH },
+        { MachineCycle.PUSH_HIGH, PUSH_HIGH },
+        { MachineCycle.PUSH_LOW, PUSH_LOW },
+        
+        { MachineCycle.POP_LOW, POP_LOW },
+        { MachineCycle.POP_HIGH, POP_HIGH },
     };
 }
 
@@ -58,7 +62,7 @@ public enum MachineCycle
     
     ALU_EXECUTE,
 
-    EMPTY, HALT, //FIXED INSTRUCTIONS
+    EMPTY, HALT,
     
     MICRO_CYCLE,
     
@@ -69,6 +73,8 @@ public enum MachineCycle
     
     COPY_RP_LOW, COPY_RP_HIGH,
     
-    CALL_LOW, CALL_HIGH,
-    RET_LOW, RET_HIGH,
+    XTHL_HIGH, XTHL_LOW, RAM_READ_XTHL,
+    
+    PUSH_HIGH, PUSH_LOW,
+    POP_LOW, POP_HIGH,
 }

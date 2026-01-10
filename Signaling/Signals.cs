@@ -25,7 +25,7 @@ public enum SideEffect
     WZ_INC,
     
     STC, CMC, CMA,
-    SWAP,
+    SWAP, XTHL, XTHL_SP,
     
     HALT,
 }

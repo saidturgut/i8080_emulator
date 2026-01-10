@@ -2,7 +2,7 @@ namespace i8080_emulator.Executing;
 using Computing;
 using Signaling;
 
-// ALU RESOLVER, ADDRESS BUFFER, MULTIPLEXER, INCREMENTER
+// ALU CONTROL, ADDRESS BUFFER, MULTIPLEXER, INCREMENTER
 public partial class DataPath : DataPathROM
 {
     private readonly RAM RAM = new ();
@@ -12,8 +12,7 @@ public partial class DataPath : DataPathROM
     private readonly TriStateBus ABUS_H = new (); 
     private readonly TriStateBus ABUS_L = new ();
     
-    private PipelineRegister IR = new ();
-    private ClockedRegister FLAGS = new (Register.FLAGS);
+    private readonly PipelineRegister IR = new ();
     
     private SignalSet signals = new ();
     
@@ -27,9 +26,6 @@ public partial class DataPath : DataPathROM
     
     public void Clear()
     {
-        if(signals.SideEffect == SideEffect.HALT)
-            HALT = true;
-        
         DBUS.Clear();
         ABUS_H.Clear();
         ABUS_L.Clear();
@@ -42,8 +38,13 @@ public partial class DataPath : DataPathROM
     {
         foreach (ClockedRegister register in Registers.Values)
             register.Commit();
-        FLAGS.Commit();
+        
+        if(signals.SideEffect == SideEffect.HALT)
+            HALT = true;
     }
+
+    private bool Permit() 
+        => signals.SideEffect != SideEffect.HALT && !PcOverriders.ContainsKey(signals.SideEffect);
 
     public void Debug()
     {
@@ -52,7 +53,7 @@ public partial class DataPath : DataPathROM
             Environment.Exit(5);
         }
         
-        byte flags = FLAGS.GetTemp();
+        byte flags = Registers[Register.FLAGS].GetTemp();
         Console.WriteLine($"PROGRAM COUNTER : {(ushort)((Registers[Register.PC_H].GetTemp() << 8) + Registers[Register.PC_L].GetTemp())}");
         Console.WriteLine($"IR : {IR.Get()}");
         Console.WriteLine($"TMP : {Registers[Register.TMP].GetTemp()}");

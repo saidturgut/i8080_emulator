@@ -12,18 +12,20 @@ public class ControlUnit : ControlUnitROM
     public SignalSet Emit() 
         => MachineCyclesMethod[currentCycle]();
 
-    public void Decode(byte IR)
+    public void Decode(byte[] values)
     {
         Console.WriteLine("CURRENT CYCLE : "  + currentCycle);
         
         if (currentCycle == MachineCycle.FETCH)
         {
-            decoded = Decoder.Decode(IR);
+            decoded = Decoder.Decode(values);
         }
     }
 
-    public void Advance()
+    public void Advance(bool HALT)
     {
+        if(HALT) return;
+        
         Sequencer.Advance((byte)(decoded.Cycles.Count - 1));
         currentCycle = decoded.Cycles[Sequencer.mState];
     }

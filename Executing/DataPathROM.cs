@@ -13,6 +13,7 @@ public class DataPathROM
         { Register.HL_L, new ClockedRegister(Register.HL_L) }, { Register.HL_H, new ClockedRegister(Register.HL_H) }, // ABS ADDRESS REGISTER
         { Register.SP_L, new ClockedRegister(Register.SP_L) }, { Register.SP_H, new ClockedRegister(Register.SP_H) }, // STACK POINTER
         { Register.WZ_L, new ClockedRegister(Register.WZ_L) }, { Register.WZ_H, new ClockedRegister(Register.WZ_H) }, // TEMP ADDRESS REGISTER
+        { Register.FLAGS, new ClockedRegister(Register.FLAGS) },// FLAGS
     };
     
     protected Dictionary<Register, ClockedRegister[]> RegisterPairs = new();

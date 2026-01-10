@@ -3,11 +3,11 @@ using Signaling;
 
 public partial class DataPath
 {
-    public byte GetIR() => IR.Get();
+    public byte[] GetValues() => [IR.Get(), Registers[Register.FLAGS].GetTemp()];
     
     public void MultiplexerDrive()
     {        
-        if(signals.DataDriver == Register.NONE || PcOverriders.ContainsKey(signals.SideEffect))
+        if(signals.DataDriver == Register.NONE || !Permit())
             return;
         
         if (signals.DataDriver == Register.RAM)
@@ -25,7 +25,7 @@ public partial class DataPath
     
     public void MultiplexerLatch()
     {        
-        if(signals.DataLatcher == Register.NONE || PcOverriders.ContainsKey(signals.SideEffect))
+        if(signals.DataLatcher == Register.NONE || !Permit())
             return;
         
         if (signals.DataLatcher == Register.IR)
@@ -35,7 +35,12 @@ public partial class DataPath
         }
         
         if (signals.DataLatcher == Register.RAM)
+        {
             RAM.Write(ABUS_H, ABUS_L, DBUS);
+            
+            if (signals.SideEffect is SideEffect.XTHL or SideEffect.XTHL_SP)
+                Registers[signals.DataDriver].Set(Registers[Register.TMP].Get());
+        }
         else
         {
             if (signals.SideEffect == SideEffect.SWAP)

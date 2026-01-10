@@ -1,6 +1,0 @@
-Jccc
-Cccc
-Rccc
-PUSH
-POP
-XTHL

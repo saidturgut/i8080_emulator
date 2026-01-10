@@ -4,9 +4,9 @@ using Signaling;
 
 public partial class DataPath
 {
-    public void Incrementer()
+    public void Increment()
     {
-        if(signals.SideEffect == SideEffect.NONE || PcOverriders.ContainsKey(signals.SideEffect))
+        if(signals.SideEffect == SideEffect.NONE || !Permit())
             return;
         
         if (PairIncrements.TryGetValue(signals.SideEffect, out var pair))
@@ -23,9 +23,11 @@ public partial class DataPath
         
         // CARRY FLAG CONTROLS
         if (signals.SideEffect == SideEffect.STC)
-            FLAGS.Set((byte)(FLAGS.Get() | (byte)ALUFlag.Carry));
+            Registers[Register.FLAGS].Set((byte)
+                (Registers[Register.FLAGS].Get() | (byte)ALUFlag.Carry));
         if (signals.SideEffect == SideEffect.CMC)
-            FLAGS.Set((byte)(FLAGS.Get() ^ (byte)ALUFlag.Carry));
+            Registers[Register.FLAGS].Set((byte)
+                (Registers[Register.FLAGS].Get() ^ (byte)ALUFlag.Carry));
     }
 
     private static void Increment(ClockedRegister low, ClockedRegister high)

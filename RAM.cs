@@ -9,7 +9,23 @@ public class RAM
     
     private readonly byte[] ROM =
     [
-        0x76,
+        // LXI SP,3000h
+        0x31, 0x00, 0x30,
+
+        // LXI H,1234h
+        0x21, 0x34, 0x12,
+
+        // PUSH H
+        0xE5,
+
+        // LXI H,ABCDh
+        0x21, 0xCD, 0xAB,
+
+        // XTHL
+        0xE3,
+
+        // HLT
+        0x76                   // HLT
     ];
     
     public void Init()
@@ -20,6 +36,7 @@ public class RAM
     
     public void Read(TriStateBus aBusH, TriStateBus aBusL, TriStateBus dBus)
     {
+        Console.WriteLine("RAM READ : " + Merge(aBusH.Get(), aBusL.Get()));
         dBus.Set(Memory[Merge(aBusH.Get(), aBusL.Get())]);
     }
 

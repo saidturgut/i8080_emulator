@@ -4,10 +4,12 @@ using Signaling;
 
 public partial class DataPath
 {
-    public void ControlALU()
+    public void ALUControl()
     {
         if(signals.AluOperation is null)
             return;
+
+        ClockedRegister FLAGS = Registers[Register.FLAGS];
         
         var nullable = signals.AluOperation!.Value;
         bool CarryFlag = (byte)(FLAGS.Get() & (byte)ALUFlag.Carry) != 0;
@@ -68,6 +70,7 @@ public partial class DataPath
     
     private void UpdateFlags(ALUFlag mask, byte newFlags)
     {
-        FLAGS.Set((byte)((FLAGS.Get() & (byte)~mask) | (newFlags & (byte)mask)));
+        Registers[Register.FLAGS].Set((byte)
+            ((Registers[Register.FLAGS].Get() & (byte)~mask) | (newFlags & (byte)mask)));
     }
 }

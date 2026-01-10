@@ -34,5 +34,5 @@ public partial class ControlUnitROM
     };
 
     private static SignalSet MICRO_CYCLE() => new()
-        { AddressDriver = Register.PC_L, SideEffect = decoded.SideEffect };
+        { SideEffect = decoded.SideEffect };
 }
