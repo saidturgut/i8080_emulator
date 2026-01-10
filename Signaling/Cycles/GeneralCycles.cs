@@ -26,6 +26,14 @@ public partial class ControlUnitROM
         DataDriver = decoded.DataDriver,
         DataLatcher = Register.TMP,
     };
+
+    private static SignalSet EXECUTE_DECODED() => new()
+    {
+        AddressDriver = decoded.AddressDriver,
+        DataDriver = decoded.DataDriver, 
+        DataLatcher = decoded.DataLatcher,
+        SideEffect = decoded.SideEffect
+    };
     
     private static SignalSet ALU_EXECUTE() => new ()
     {

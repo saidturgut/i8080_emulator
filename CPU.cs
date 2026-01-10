@@ -15,9 +15,11 @@ public class CPU
         
         while (!DataPath.HALT)
         {
-            Thread.Sleep(50);
+            DataPath.HostInput();
             
             Tick();
+            
+            //Thread.Sleep(100);
         }
         
         DataPath.MemoryDump();
@@ -35,6 +37,8 @@ public class CPU
         DataPath.PreIncrement();
         DataPath.AddressBuffer();
         DataPath.MultiplexerDrive();
+        
+        DataPath.IOControl();
         
         DataPath.MultiplexerLatch();
         DataPath.Increment();

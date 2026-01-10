@@ -1,3 +1,5 @@
+using i8080_emulator.InputOutput;
+
 namespace i8080_emulator;
 using Executing;
 
@@ -9,34 +11,42 @@ public class RAM
     
     private readonly byte[] ROM =
     [
-        // LXI SP,3000h
-        0x31, 0x00, 0x30,
-
-        // LXI H,1234h
-        0x21, 0x34, 0x12,
-
-        // PUSH H
-        0xE5,
-
-        // LXI H,ABCDh
-        0x21, 0xCD, 0xAB,
-
-        // XTHL
-        0xE3,
-
-        // HLT
-        0x76                   // HLT
+        0x0E, 0x41,        // MVI C,'A'
+        0xCD, 0xC0, 0xF3,  // CALL 0xF3C0
+        0x76
     ];
     
     public void Init()
     {
-        for (int i = 0; i < ROM.Length; i++)
-            Memory[i] = ROM[i];
+        for (int i = 0; i < BIOS.VECTORS.Length; i++)
+            Memory[i + 0x0000] = BIOS.VECTORS[i];
+        
+        byte[] program = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "Tests", "8080EXER.COM"));
+        
+        for (int i = 0; i < program.Length; i++)
+            Memory[i + 0x0100] = program[i];
+        
+        for (int i = 0; i < BIOS.WBOOT.Length; i++)
+            Memory[i + 0xF200] = BIOS.WBOOT[i];
+        
+        for (int i = 0; i < BIOS.JUMP_TABLE.Length; i++)
+            Memory[i + 0xF300] = BIOS.JUMP_TABLE[i];
+
+        for (int i = 0; i < BIOS.RET.Length; i++)
+            Memory[i + 0xF380] = BIOS.RET[i];
+
+        for (int i = 0; i < BIOS.CONST.Length; i++)
+            Memory[i + 0xF3A0] = BIOS.CONST[i];
+
+        for (int i = 0; i < BIOS.CONIN.Length; i++)
+            Memory[i + 0xF3B0] = BIOS.CONIN[i];
+        
+        for (int i = 0; i < BIOS.CONOUT.Length; i++)
+            Memory[i + 0xF3C0] = BIOS.CONOUT[i];
     }
     
     public void Read(TriStateBus aBusH, TriStateBus aBusL, TriStateBus dBus)
     {
-        Console.WriteLine("RAM READ : " + Merge(aBusH.Get(), aBusL.Get()));
         dBus.Set(Memory[Merge(aBusH.Get(), aBusL.Get())]);
     }
 
@@ -44,7 +54,6 @@ public class RAM
     {
         Memory[Merge(aBusH.Get(), aBusL.Get())] = dBus.Get();
         MemoryDump[Merge(aBusH.Get(), aBusL.Get())] = Memory[Merge(aBusH.Get(), aBusL.Get())];
-
     }
 
     private ushort Merge(byte high, byte low)

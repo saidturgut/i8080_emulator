@@ -22,6 +22,7 @@ public partial class ControlUnitROM
 
         { MachineCycle.INTERNAL_LATCH, INTERNAL_LATCH },
         { MachineCycle.TMP_LATCH, TMP_LATCH },
+        { MachineCycle.EXECUTE_DECODED, EXECUTE_DECODED },
 
         { MachineCycle.ALU_EXECUTE, ALU_EXECUTE },
 
@@ -59,6 +60,7 @@ public enum MachineCycle
 
     INTERNAL_LATCH,
     TMP_LATCH,
+    EXECUTE_DECODED,
     
     ALU_EXECUTE,
 

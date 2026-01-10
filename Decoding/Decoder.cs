@@ -44,6 +44,8 @@ public class Decoder : DecoderMultiplexer
             {
                 switch (opcode)
                 {
+                    case 0xDB: return IO(true); // IN
+                    case 0xD3: return IO(false); // OUT
                     case 0xCD: return CALL();// CALL
                     case 0xC9: return RET();// RET
                     case 0xC3: return JMP();// JMP

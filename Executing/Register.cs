@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 namespace i8080_emulator.Executing;
 
 public class ClockedRegister(Register nam)
@@ -34,17 +32,4 @@ public class PipelineRegister
         => value = input;
    
     public byte Get() => value;
-}
-
-public enum Register
-{
-    NONE,
-    PC_L, PC_H, 
-    IR, 
-    RAM, TMP,
-    SP_L, SP_H, 
-    A, B, C, D, E, 
-    HL_L, HL_H, 
-    WZ_H, WZ_L,
-    FLAGS,
 }

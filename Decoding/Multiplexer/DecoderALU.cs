@@ -14,7 +14,6 @@ public partial class DecoderMultiplexer
         {
             var resolved = ResolveOpcode(opcode, imm);
             
-            Console.WriteLine(resolved.driver.ToString() + resolved.operation.ToString()  + resolved.aluOpcode.ToString() );
             decoded = ALU(resolved.driver, resolved.operation, resolved.aluOpcode);
         }
         else

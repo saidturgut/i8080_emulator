@@ -14,8 +14,6 @@ public struct Decoded()
     public Register[] DrivePairs = [];
     public Register[] LatchPairs = [];
     
-    public bool TakeSnapshot = false;
-
     public ALUOperation? AluOperation = null;
     
     public readonly List<MachineCycle> Cycles = [MachineCycle.FETCH];

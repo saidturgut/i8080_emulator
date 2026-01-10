@@ -14,8 +14,6 @@ public class ControlUnit : ControlUnitROM
 
     public void Decode(byte[] values)
     {
-        Console.WriteLine("CURRENT CYCLE : "  + currentCycle);
-        
         if (currentCycle == MachineCycle.FETCH)
         {
             decoded = Decoder.Decode(values);

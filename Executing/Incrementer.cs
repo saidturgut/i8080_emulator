@@ -11,9 +11,6 @@ public partial class DataPath
         
         if (PairIncrements.TryGetValue(signals.SideEffect, out var pair))
         {
-            if(pair.Pair[0].name == Register.PC_L)
-                Console.WriteLine("PC INCREMENTED");
-            
             if (!pair.Decrement)
                 Increment(pair.Pair[0], pair.Pair[1]);
             else

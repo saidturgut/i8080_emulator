@@ -1,6 +1,18 @@
 namespace i8080_emulator.Executing;
 using Signaling;
 
+public enum Register
+{
+    NONE = 0,
+    PC_L = 1, PC_H = 2, 
+    TMP = 3,
+    A = 4, B = 5, C = 6, D = 7, E = 8, 
+    HL_L = 9, HL_H = 10, 
+    SP_L = 11, SP_H = 12, 
+    WZ_L = 13, WZ_H = 14, 
+    FLAGS = 15,
+    IR = 16, RAM = 17
+}
 public class DataPathROM
 {
     protected readonly Dictionary<Register, ClockedRegister> Registers = new()
@@ -15,6 +27,21 @@ public class DataPathROM
         { Register.WZ_L, new ClockedRegister(Register.WZ_L) }, { Register.WZ_H, new ClockedRegister(Register.WZ_H) }, // TEMP ADDRESS REGISTER
         { Register.FLAGS, new ClockedRegister(Register.FLAGS) },// FLAGS
     };
+
+   /* protected readonly ClockedRegister?[] Registers =
+    [
+        new ClockedRegister(Register.NONE),
+        new ClockedRegister(Register.PC_L), new ClockedRegister(Register.PC_H),
+        new ClockedRegister(Register.TMP), 
+        new ClockedRegister(Register.A),
+        new ClockedRegister(Register.B), new ClockedRegister(Register.C),
+        new ClockedRegister(Register.D), new ClockedRegister(Register.E),
+        new ClockedRegister(Register.HL_L), new ClockedRegister(Register.HL_H),
+        new ClockedRegister(Register.SP_L), new ClockedRegister(Register.SP_H),
+        new ClockedRegister(Register.SP_L), new ClockedRegister(Register.SP_H),
+        new ClockedRegister(Register.WZ_L), new ClockedRegister(Register.WZ_H),
+        new ClockedRegister(Register.FLAGS),
+    ];*/
     
     protected Dictionary<Register, ClockedRegister[]> RegisterPairs = new();
     protected Dictionary<SideEffect, IncrementPair> PairIncrements = new();
