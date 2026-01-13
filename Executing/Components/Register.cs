@@ -5,6 +5,12 @@ public class ClockedRegister(Register nam)
     public Register name = nam;
     private byte value;
     private byte temp;
+
+    public void Init(byte input)
+    {
+        value = input;
+        temp = input;
+    }
     
     public void Commit() 
         => value = temp;

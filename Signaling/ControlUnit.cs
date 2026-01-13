@@ -22,7 +22,10 @@ public class ControlUnit : ControlUnitROM
 
     public void Advance(bool HALT)
     {
-        if(HALT) return;
+        if(HALT)
+        {
+            return;
+        }
         
         Sequencer.Advance((byte)(decoded.Cycles.Count - 1));
         currentCycle = decoded.Cycles[Sequencer.mState];

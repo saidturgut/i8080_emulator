@@ -100,12 +100,8 @@ public class DecoderModel
         => (byte)((opcode & 0b00_001_000) >> 3);
     protected static byte BB_XXB_BBB(byte opcode)
         => (byte)((opcode & 0b00_110_000) >> 4);
-    protected static byte BB_BXX_BBB(byte opcode)
-        => (byte)((opcode & 0b00_011_000) >> 3);
     protected static byte BBBB_XXXX(byte opcode)
         => (byte)(opcode & 0b0000_1111);
-    protected static byte XXXX_BBBB(byte opcode)
-        => (byte)((opcode & 0b1111_0000) >> 4);
 
     protected static int GetRegisterPair(byte opcode) =>
         (((opcode & 0x30) >> 4) + ((opcode & 0x8) >> 3) * 4);

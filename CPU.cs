@@ -1,5 +1,4 @@
 namespace i8080_emulator;
-using External;
 using Executing;
 using Signaling;
 
@@ -19,8 +18,6 @@ public class CPU
             DataPath.HostInput();
             
             Tick();
-            
-            //Thread.Sleep(100);
         }
         
         DataPath.MemoryDump();
@@ -49,9 +46,8 @@ public class CPU
         
         // FALLING EDGE
         DataPath.Commit();
-        
         DataPath.Debug();
-
+        
         ControlUnit.Advance(DataPath.HALT);
     }
 }

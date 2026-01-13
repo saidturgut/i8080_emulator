@@ -19,10 +19,13 @@ public partial class DecoderMultiplexer : DecoderModel
         decoded.Cycles.Add(MachineCycle.RAM_READ_IMM);
 
         if (decoded.DataLatcher == Register.RAM)
+        {
             decoded.Cycles.Add(MachineCycle.RAM_WRITE_EXE);
+        }        
         else
+        {
             decoded.Cycles.Add(MachineCycle.INTERNAL_LATCH);
-        
+        }        
         return decoded;
     }
 

@@ -7,17 +7,23 @@ public partial class DataPath
     public void ALUControl()
     {
         if(signals.AluOperation is null)
+        {
             return;
-
+        }
+        
         ClockedRegister FLAGS = Registers[Register.FLAGS];
         
         var nullable = signals.AluOperation!.Value;
         bool CarryFlag = (byte)(FLAGS.Get() & (byte)ALUFlag.Carry) != 0;
         bool AuxCarryFlag = (byte)(FLAGS.Get() & (byte)ALUFlag.AuxCarry) != 0;
         ALUOutput output;
-        
-        if (nullable.Opcode == ALUOpcode.DAD) { DAD(nullable); return; }
-        
+
+        if (nullable.Opcode == ALUOpcode.DAD)
+        {
+            DAD(nullable);
+            return;
+        }
+
         if (nullable.Operation == Operation.ROT)
         {
             if (nullable.Opcode == ALUOpcode.DAA)

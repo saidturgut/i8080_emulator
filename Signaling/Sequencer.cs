@@ -7,8 +7,12 @@ public class Sequencer
     public void Advance(byte cycleCount)
     {
         if (mState == cycleCount)
+        {
             mState = 0;
+        }        
         else
+        {
             mState++;
+        }    
     }
 }

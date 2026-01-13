@@ -13,14 +13,16 @@ public partial class DecoderMultiplexer
         if (isNative)
         {
             var resolved = ResolveOpcode(opcode, imm);
-            
             decoded = ALU(resolved.driver, resolved.operation, resolved.aluOpcode);
         }
         else
-            decoded = INR_DCR(opcode);
-        
+        {
+            decoded = INR_DCR(opcode); 
+        }        
         if (imm)
+        {
             decoded.Cycles.Add(MachineCycle.RAM_READ_IMM);
+        }
         else
         {
             decoded.Cycles.Add(decoded.DataDriver == Register.RAM ? 
@@ -35,7 +37,9 @@ public partial class DecoderMultiplexer
         nullable.UseCarry = CarryUsers.Contains(nullable.Opcode);
 
         if (nullable.Opcode == ALUOpcode.CMP)
+        {
             decoded.DataLatcher = Register.NONE;
+        }
 
         decoded.AluOperation = nullable;
         return decoded;

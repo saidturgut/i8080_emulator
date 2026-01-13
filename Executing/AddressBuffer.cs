@@ -6,10 +6,14 @@ public partial class DataPath
     public void PreIncrement()
     {
         if(signals.SideEffect == SideEffect.NONE)
+        {
             return;
-
+        }
+        
         if (signals.SideEffect == SideEffect.SP_NXT)
+        {
             Decrement(Registers[Register.SP_L], Registers[Register.SP_H]);
+        }        
         
         if(PcOverriders.TryGetValue(signals.SideEffect, out var overrider))
         {
@@ -21,7 +25,9 @@ public partial class DataPath
     public void AddressBuffer()
     {
         if(signals.AddressDriver == Register.NONE || !Permit())
+        {
             return;
+        }
         
         if (RegisterPairs.TryGetValue(signals.AddressDriver, out var addressPair))
         {

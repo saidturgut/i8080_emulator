@@ -7,7 +7,9 @@ public partial class DataPath
     public void Increment()
     {
         if(signals.SideEffect == SideEffect.NONE || !Permit())
+        {
             return;
+        }        
         
         if (PairIncrements.TryGetValue(signals.SideEffect, out var pair))
         {
@@ -31,17 +33,21 @@ public partial class DataPath
     {
         byte prev = low.Get();
         low.Set((byte)(prev + 1));
-        
+
         if (prev == 0xFF)
+        {
             high.Set((byte)(high.Get() + 1));
+        }
     }
-    
+
     private static void Decrement(ClockedRegister low, ClockedRegister high)
     {
         byte prev = low.Get();
         low.Set((byte)(prev - 1));
-        
+
         if (prev == 0x00)
+        {
             high.Set((byte)(high.Get() - 1));
+        }
     }
 }

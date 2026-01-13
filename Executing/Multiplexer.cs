@@ -26,7 +26,9 @@ public partial class DataPath
     public void MultiplexerLatch()
     {        
         if(signals.DataLatcher == Register.NONE || !Permit())
+        {
             return;
+        }        
         
         if (signals.DataLatcher == Register.IR)
         {
@@ -39,12 +41,16 @@ public partial class DataPath
             RAM.Write(ABUS_H, ABUS_L, DBUS);
             
             if (signals.SideEffect is SideEffect.XTHL or SideEffect.XTHL_SP)
+            {
                 Registers[signals.DataDriver].Set(Registers[Register.TMP].Get());
+            }        
         }
         else
         {
             if (signals.SideEffect == SideEffect.SWAP)
+            {
                 Registers[signals.DataDriver].Set(Registers[signals.DataLatcher].Get());
+            }        
             
             Registers[signals.DataLatcher].Set(DBUS.Get());
         }

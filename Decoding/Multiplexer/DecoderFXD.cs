@@ -1,8 +1,7 @@
-using i8080_emulator.Executing;
-using i8080_emulator.Signaling;
-
 namespace i8080_emulator.Decoding.Multiplexer;
 using Signaling.Cycles;
+using Executing;
+using Signaling;
 
 public partial class DecoderMultiplexer
 {
