@@ -1,6 +1,6 @@
 namespace i8080_emulator.Executing.Computing;
 
-public class Alu : AluRom
+public partial class Alu
 {
     public AluOutput Compute(AluInput input, Operation operation)
     {
@@ -17,4 +17,14 @@ public class Alu : AluRom
         
         return output;
     }
+    
+    private static readonly Func<AluInput, AluOutput>[] Operations =
+    [
+        NONE, ADD ,SUB, AND, XOR, OR,
+    ];
+}
+
+public enum Operation
+{
+    NONE, ADD, SUB, AND, XOR, OR,
 }

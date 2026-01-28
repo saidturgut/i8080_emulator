@@ -17,7 +17,7 @@ public partial class DataPath
         {
             A = Registers[(byte)Register.A].Get(),
             B = Registers[(byte)Register.TMP].Get(),
-            C = (byte)(action.UseCarry && GetFlag(PswFlag.Carry) ? 1 : 0),
+            C = (byte)(GetFlag(PswFlag.Carry) && action.UseCarry ? 1 : 0),
         }, action.Operation);
         
         Registers[(byte)Register.A].Set(output.Result);

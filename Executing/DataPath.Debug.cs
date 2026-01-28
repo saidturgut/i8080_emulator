@@ -5,13 +5,10 @@ public partial class DataPath
 {
     private void DebugInit()
     {
-        Registers[(byte)Register.HL_L].Set(0xFC);
-        Registers[(byte)Register.HL_H].Set(0xA);
-        Registers[(byte)Register.D].Set(0x12);
-        Registers[(byte)Register.E].Set(0x0B);
-        Registers[(byte)Register.A].Set(0x20);
-        Registers[(byte)Register.B].Set(0x20);
-        Registers[(byte)Register.C].Set(0x30);
+        Registers[(byte)Register.HL_L].Set(0x20);
+        Registers[(byte)Register.A].Set(0xAA);
+        Registers[(byte)Register.B].Set(0xAA);
+        Registers[(byte)Register.PSW].Set(0x1);
     }
     
     public void Debug()

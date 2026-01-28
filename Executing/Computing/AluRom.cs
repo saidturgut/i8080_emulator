@@ -1,21 +1,7 @@
 namespace i8080_emulator.Executing.Computing;
 
-public partial class AluRom
-{
-    protected static readonly Func<AluInput, AluOutput>[] Operations =
-    [
-        NONE, ADD ,SUB, AND, XOR, OR,
-    ];
-}
-
-public enum Operation
-{
-    NONE, ADD, SUB, AND, XOR, OR,
-}
-
 public struct AluInput
 {
-    public Operation Operation;
     public byte A;
     public byte B;
     public byte C;

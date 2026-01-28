@@ -1,6 +1,6 @@
 namespace i8080_emulator.Executing.Computing;
 
-public partial class AluRom
+public partial class Alu
 {
     private static AluOutput NONE(AluInput input) => new();
 
@@ -21,31 +21,28 @@ public partial class AluRom
     private static AluOutput SUB(AluInput input)
     {
         AluOutput output = new();
-        input.C = (byte)(1 - input.C);
         
-        var result = input.A + (~input.B & 0xFF) + input.C;
+        var result = input.A + (~input.B & 0xFF) + (1 - input.C);
         output.Result = (byte)result;
-     
-        if ((input.A & 0x0F) - (input.B & 0x0F) - (1 - input.C) < 0) 
+
+        if ((input.A & 0xF) < (input.B & 0xF) + input.C)
             output.Flags |= (byte)PswFlag.Auxiliary;
-        if (result >= 0x100)
+        if (input.A < input.B + input.C)
             output.Flags |= (byte)PswFlag.Carry;
         
         return output;
     }
     
-    private static AluOutput AND(AluInput input) => new()
+    private static AluOutput AND(AluInput input)
     {
-
-    };
-
+        AluOutput output = new()
+            { Result = (byte)(input.A & input.B), };
+        
+        output.Flags |= (byte)PswFlag.Auxiliary;
+        return output;
+    }
     private static AluOutput XOR(AluInput input) => new()
-    {
-
-    };
-    
+        { Result = (byte)(input.A ^ input.B) };
     private static AluOutput OR(AluInput input) => new()
-    {
-
-    };
+        { Result = (byte)(input.A | input.B) };
 }

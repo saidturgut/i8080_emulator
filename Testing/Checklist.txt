@@ -1,0 +1,31 @@
+Inst      Encoding          Flags   Description
+----------------------------------------------------------------------
+INR D     00DDD100          ZSPA    Increment register
+DCR D     00DDD101          ZSPA    Decrement register
+INX RP    00RP0011          -       Increment register pair
+DCX RP    00RP1011          -       Decrement register pair
+DAD RP    00RP1001          C       Add register pair to HL (16 bit add)
+DAA       00100111          ZSPCA   Decimal Adjust accumulator
+CMP S     10111SSS          ZSPCA   Compare register with A
+CPI #     11111110          ZSPCA   Compare immediate with A
+RLC       00000111          C       Rotate A left
+RRC       00001111          C       Rotate A right
+RAL       00010111          C       Rotate A left through carry
+RAR       00011111          C       Rotate A right through carry
+CMA       00101111          -       Compliment A
+CMC       00111111          C       Compliment Carry flag
+STC       00110111          C       Set Carry flag
+JMP a     11000011 lb hb    -       Unconditional jump
+Jccc a    11CCC010 lb hb    -       Conditional jump
+CALL a    11001101 lb hb    -       Unconditional subroutine call
+Cccc a    11CCC100 lb hb    -       Conditional subroutine call
+RET       11001001          -       Unconditional return from subroutine
+Rccc      11CCC000          -       Conditional return from subroutine
+RST n     11NNN111          -       Restart (Call n*8)
+PCHL      11101001          -       Jump to address in H:L
+PUSH RP   11RP0101 *2       -       Push register pair on the stack
+POP RP    11RP0001 *2       *2      Pop  register pair from the stack
+XTHL      11100011          -       Swap H:L with top word on stack
+SPHL      11111001          -       Set SP to content of H:L
+IN p      11011011 pa       -       Read input port into A
+OUT p     11010011 pa       -       Write A to output port

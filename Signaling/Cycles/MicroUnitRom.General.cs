@@ -16,9 +16,7 @@ public partial class MicroUnitRom
     private static SignalSet HALT() => new() { State = State.HALT };
 
     private static SignalSet ALU_EXECUTE() => new()
-    {
-        AluAction = decoded.AluAction!.Value,
-    };
+        { AluAction = decoded.AluAction!.Value, };
     
     private static SignalSet MOVE_IMM() => new()
     {

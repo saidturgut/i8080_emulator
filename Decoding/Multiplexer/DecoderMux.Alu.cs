@@ -3,10 +3,10 @@ using Executing.Computing;
 using Signaling.Cycles;
 using Signaling;
 
-// 10b INSTRUCTIONS
+// 10b AND 11b INSTRUCTIONS
 public partial class DecoderMux
 {
-    protected static Decoded ALU()
+    protected static Decoded ALU(bool native)
     {
         Decoded decoded = new()
         {
@@ -19,7 +19,7 @@ public partial class DecoderMux
                 FlagMasks[(byte)FlagMask.SZAPC],
                 zz_xxx_zzz() == 0x1 || zz_xxx_zzz() == 3), // ADC, SBB
 
-            MicroCycles = [MicroCycle.MOVE_LOAD, MicroCycle.ALU_EXECUTE],
+            MicroCycles = [native ? MicroCycle.MOVE_LOAD : MicroCycle.MOVE_IMM, MicroCycle.ALU_EXECUTE],
         };
         
         Console.WriteLine(EncodedOperations[zz_xxx_zzz()]);

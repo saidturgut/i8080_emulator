@@ -35,12 +35,16 @@ public class Decoder : DecoderMux
                 break;
             }
             case 0x1: return MOV();
-            case 0x2: return ALU();
+            case 0x2: return ALU(true);
             case 0x3:
             {
                 switch (opcode)
                 {
                     case 0xEB: return XCHG();
+                }
+                switch (zz_zzz_xxx())
+                {
+                    case 0x6: return ALU(false);
                 }
                 break;
             }
