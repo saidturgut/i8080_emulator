@@ -21,11 +21,15 @@ public class MicroUnit : MicroUnitMux
     
     public SignalSet Emit()
     {
-        Console.WriteLine($"CYCLE: \"{decoded.MicroCycles[currentCycle]}\"");
-
         Signals = MicroCycles[(byte)decoded.MicroCycles[currentCycle]]();
         State = Signals.State;
         return Signals;
+    }
+
+    public void Debug(bool DEBUG_MODE)
+    {
+        if(!DEBUG_MODE) return;
+        Console.WriteLine($"CYCLE: \"{decoded.MicroCycles[currentCycle]}\"");
     }
 
     public void Advance(byte ir, Psw psw)

@@ -8,6 +8,8 @@ public class Cpu
     private readonly DataPath DataPath = new ();
     private readonly MicroUnit MicroUnit = new ();
     
+    private const bool DEBUG_MODE = false;
+    
     public void PowerOn() => Clock();
     
     private void Clock()
@@ -17,12 +19,16 @@ public class Cpu
         
         while (MicroUnit.State is not State.HALT)
         {
+            DataPath.HostInput();
+            
             Tick();
         }
     }
 
     private void Tick()
     {
+        MicroUnit.Debug(DEBUG_MODE);
+
         DataPath.Clear();
         DataPath.Receive(
         MicroUnit.Emit());
@@ -34,7 +40,8 @@ public class Cpu
         DataPath.DataLatch();
 
         DataPath.Commit();
-        DataPath.Debug();
+        
+        DataPath.Debug(DEBUG_MODE);
         
         MicroUnit.Advance(DataPath.GetIr(), DataPath.Psw);
     }

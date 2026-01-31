@@ -1,12 +1,10 @@
 namespace i8080_emulator.Executing;
-using Components;
-using Computing;
-using Signaling;
 
 public partial class DataPath
 {
     private readonly Tty Tty = new ();
-    private readonly Disk Disk = new ();
+
+    public void HostInput() => Tty.HostInput();
     
     public void IoControl()
     {
@@ -18,20 +16,20 @@ public partial class DataPath
             }
             case IoAction.INPUT:
             {
-                Dbus.Set(AbusL.Get() switch
+                switch (AbusL.Get())
                 {
-                    0x00 => Tty.ReadStatus(),
-                    0x01 => Tty.ReadData(),
-                    _=> throw new Exception("INVALID INPUT PORT"),
-                });
+                    case 0: Dbus.Set(Tty.ReadStatus()); break;
+                    case 1: Dbus.Set(Tty.ReadData()); break;
+                    default: throw new Exception($"INVALID INPUT PORT \"{AbusL.Get()}\"");
+                }
                 return;
             }
             case IoAction.OUTPUT:
             {
                 switch (AbusL.Get())
                 {
-                    case 0x02: Tty.WriteData(Dbus.Get()); break;
-                    default: throw new Exception("INVALID OUTPUT PORT");
+                    case 1: Tty.WriteData(Dbus.Get()); break;
+                    default: throw new Exception($"INVALID OUTPUT PORT \"{AbusL.Get()}\"");
                 }
                 return;
             }

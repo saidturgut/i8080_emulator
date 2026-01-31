@@ -70,7 +70,9 @@ public class Decoder : DecoderMux
                     case 0x4: return COND(psw, PUSH, Cft.CALL);
                     case 0x0: return COND(psw, POP, Cft.RET);
                     case 0x6: return ALU(false, zz_xxx_zzz());
-                    case 0x7: return PUSH(Cft.RST);
+                    case 0x7: 
+                        //Console.WriteLine($"RST: {zz_xxx_zzz() << 3}");
+                        return PUSH(Cft.RST);
                 }
                 break;
             }

@@ -9,7 +9,11 @@ public partial class DecoderMux : DecoderRom
     {
         { 0x76, MicroCycle.HALT }, // HALT
 
+        { 0xF3, MicroCycle.IDLE }, // DI
+        { 0xFB, MicroCycle.IDLE }, // EI
+        
         { 0x00, MicroCycle.IDLE }, // NOP
+        
         { 0x08, MicroCycle.IDLE }, // NOP
         { 0x10, MicroCycle.IDLE }, // NOP
         { 0x18, MicroCycle.IDLE }, // NOP

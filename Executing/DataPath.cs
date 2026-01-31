@@ -14,7 +14,7 @@ public partial class DataPath
 
     public void Init()
     {
-        Ram.Init(false);
+        Ram.Init();
         
         for (int i = 0; i < Registers.Length; i++)
             Registers[i] = new ClockedRegister();
@@ -31,7 +31,7 @@ public partial class DataPath
         AbusH.Clear();
     }
 
-    public void Receive(SignalSet input) =>      
+    public void Receive(SignalSet input) =>
         signals = input;
 
     public byte GetIr()

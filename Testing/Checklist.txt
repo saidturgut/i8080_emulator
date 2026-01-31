@@ -1,4 +1,0 @@
-Inst      Encoding          Flags   Description
-----------------------------------------------------------------------
-IN p      11011011 pa       -       Read input port into A
-OUT p     11010011 pa       -       Write A to output port

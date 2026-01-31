@@ -52,11 +52,9 @@ public partial class DecoderMux
         IncAction = IncAction.INC,
         DataDriver = Register.RAM,
         
-        Queue = [EncodedPairsPsw[zz_xxz_zzz()][0], EncodedPairsPsw[zz_xxz_zzz()][1],
-            ..type is Cft.RET ? JMP(Cft.JMP).Queue : []],
+        Queue = [EncodedPairsPsw[type is Cft.RET ? 0x4 : zz_xxz_zzz()][0], EncodedPairsPsw[type is Cft.RET ? 0x4 : zz_xxz_zzz()][1]],
         
-        MicroCycles = [..MovePairLoad,
-            ..type is Cft.RET ? JMP(Cft.JMP).MicroCycles : []]
+        MicroCycles = [..MovePairLoad]
     };
     
     protected enum Cft

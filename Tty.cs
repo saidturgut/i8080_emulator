@@ -1,20 +1,29 @@
 namespace i8080_emulator;
-using Executing.Components;
 
 public class Tty
 {
+    private readonly Queue<byte> inputBuffer = new();
+    
+    public void HostInput()
+    {
+        while (Console.KeyAvailable)
+        {
+            inputBuffer.Enqueue((byte)Console.ReadKey(intercept: true).KeyChar);
+        }
+    }
+
     public byte ReadStatus()
     {
-        return 0;
+        return inputBuffer.Count > 0 ? (byte)0xFF : (byte)0x00;
     }
 
     public byte ReadData()
     {
-        return 0;
+        return inputBuffer.Dequeue();;
     }
 
     public void WriteData(byte data)
     {
-        
+        Console.Write((char)data);
     }
 }

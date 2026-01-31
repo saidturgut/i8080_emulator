@@ -11,7 +11,7 @@ public partial class DataPath
         
         byte lowLatch = Reg(signals.AddressDriver).Get();
         byte highLatch = Reg(signals.AddressDriver + 1).Get();
-
+        
         AbusL.Set(lowLatch);
         AbusH.Set(highLatch);
         

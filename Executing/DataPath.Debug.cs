@@ -5,16 +5,15 @@ public partial class DataPath
 {
     private void DebugInit()
     {
-        Reg(Register.A).Set(0x9A);
-        Reg(Register.SP_L).Set(0x2);
-        Reg(Register.SP_H).Set(0xA3);
-        Reg(Register.HL_L).Set(0xB2);
-        Reg(Register.HL_H).Set(0x3);
-        Reg(Register.PSW).Set(0x1);
+        Reg(Register.SP_L).Init(0xFE);
+        Reg(Register.SP_H).Init(0xFF);
     }
     
-    public void Debug()
+    public void Debug(bool DEBUG_MODE)
     {
+        Ram.DEBUG_MODE = DEBUG_MODE;
+        if(!DEBUG_MODE) return;
+        
         ushort flags = DebugAccess(Register.PSW);
         Console.WriteLine($"IR: {Hex(DebugAccess(Register.IR))}");
 
