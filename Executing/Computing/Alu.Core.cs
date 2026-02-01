@@ -1,3 +1,5 @@
+namespace intel8080.Executing.Computing;
+
 public partial class Alu
 {
     private static AluOutput NONE(AluInput input) => new();
@@ -10,7 +12,9 @@ public partial class Alu
             { Result = (byte)result };
 
         if ((input.A & 0xF) + (input.B & 0xF) + input.C > 0xF) 
+            output.Flags |= (byte)Flag.Auxiliary;
         if (result > 0xFF) 
+            output.Flags |= (byte)Flag.Carry;
         
         return output;
     }
@@ -22,7 +26,9 @@ public partial class Alu
             { Result = (byte)result };
 
         if ((input.A & 0xF) < (input.B & 0xF) + input.C)
+            output.Flags |= (byte)Flag.Auxiliary;
         if (input.A < input.B + input.C)
+            output.Flags |= (byte)Flag.Carry;
         
         return output;
     }
@@ -32,6 +38,7 @@ public partial class Alu
         AluOutput output = new()
             { Result = (byte)(input.A & input.B), };
         
+        output.Flags |= (byte)Flag.Auxiliary;
         return output;
     }
     private static AluOutput XOR(AluInput input) => new()

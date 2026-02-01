@@ -1,4 +1,4 @@
-namespace i8080_emulator.Testing;
+namespace intel8080.Testing;
 
 // NOT MY WORK
 public static class HexDump

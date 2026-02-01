@@ -1,4 +1,4 @@
-namespace i8080_emulator.Testing;
+namespace intel8080.Testing;
 using System.Globalization;
 
 // NOT MY WORK
