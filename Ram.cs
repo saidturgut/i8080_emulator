@@ -22,17 +22,13 @@ public class Ram
     
     public void Init()
     {
-        //LoadArray(0x00, Tester);
-        
-        HexLoader.Load(File.ReadAllLines("tinybas.hex"), Memory);
-        
-        if (false) HexDump.Run(Memory);
+        if (true) HexDump.Run(Memory);
     }
 
-    private void LoadByte(ushort address, byte data)
+    public void LoadByte(ushort address, byte data)
         => Memory[address] = data;
     
-    private void LoadArray(ushort address, byte[] data)
+    public void LoadArray(ushort address, byte[] data)
     {
         for (int i = 0; i < data.Length; i++)
             Memory[address + i] = data[i];

@@ -7,6 +7,7 @@ public partial class DataPath
 {
     private readonly Reg[] Registers = new Reg[17];
     
+    private readonly Rom Rom = new ();
     private readonly Ram Ram = new ();
     
     public SignalSet signals;
@@ -17,8 +18,10 @@ public partial class DataPath
     {
         DEBUG_MODE = debug;
         
+        Rom.Init(Ram);
         Ram.Init();
         Tty.Init();
+        Disk.Init();
 
         for (int i = 0; i < Registers.Length; i++)
             Registers[i] = new Reg();
@@ -33,7 +36,6 @@ public partial class DataPath
 
     public void Execute()
     {
-        Tty.HostInput();
         switch (signals.MicroStep)
         {
             case MicroStep.REG_MOVE: RegisterMove(); break;
@@ -50,7 +52,7 @@ public partial class DataPath
     
     private Reg Reg(Register register) 
         => Registers[(byte)register];
-
+    
     public byte GetIr() 
         => Reg(Register.IR).Get();
     
